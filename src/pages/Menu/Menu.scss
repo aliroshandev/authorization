@@ -1,0 +1,56 @@
+.menu-client-autocomplete {
+  width: 50%;
+  min-width: 200px;
+  max-width: 400px;
+  margin-bottom: 12px;
+}
+
+.client-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  h3 {
+    margin-left: 8px;
+  }
+}
+.icon {
+  margin: 0.1em;
+  color: #444444;
+}
+
+.menu-section {
+  .skeleton-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+    .skeleton {
+      width: 350px;
+      margin-right: 8px;
+    }
+  }
+}
+
+.access-section {
+  .control-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      width: 150px;
+      margin: 8px;
+      border-radius: 8px;
+    }
+  }
+}
+
+.table-action-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    border: none;
+    background: none;
+  }
+}

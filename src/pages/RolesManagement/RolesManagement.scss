@@ -1,0 +1,102 @@
+.autocomplete-input {
+  max-width: 400px;
+  margin-left: auto;
+  margin-bottom: 16px;
+}
+
+.role-crud-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    border: none;
+    margin-left: 4px;
+    font-size: 18px;
+    width: 28px;
+    background: none;
+  }
+  button:hover {
+    transform: scale(1.15);
+  }
+}
+
+.assign-role-to-user {
+  .top-section {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .transfer-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .transfer-container {
+      height: 70vh;
+      min-height: 300px;
+      max-height: 800px;
+      width: 300px;
+      overflow: auto;
+      border: 2px solid gray;
+      padding: 16px;
+      padding-top: 0px;
+      box-shadow: 0px 0px 4px 1px #9ac2eb6e;
+      position: relative;
+      margin: 16px;
+      border-radius: 5px;
+      ul {
+        list-style: none;
+        padding-right: 4px;
+        li {
+          cursor: pointer;
+          margin-bottom: 8px;
+          padding: 6px;
+          border: 1px solid #a7a7a740;
+          border-radius: 4px;
+        }
+        li.selected {
+          background-color: #63aceb;
+          border-radius: 8px;
+          color: white;
+        }
+      }
+      p {
+        font-weight: 600;
+        text-align: center;
+        background-color: #9ac2eb;
+        padding: 4px;
+        border-radius: 0px 0px 8px 8px;
+        position: sticky;
+        top: 0px;
+        left: 50%;
+        width: 100%;
+        color: white;
+        text-shadow: 0px 0px 4px black;
+      }
+    }
+    .control-buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      button {
+        cursor: pointer;
+        margin: 16px;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: 2px solid black;
+      }
+      button:disabled {
+        border: none;
+        background: #adadad;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

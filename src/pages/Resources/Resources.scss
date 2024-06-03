@@ -1,0 +1,36 @@
+.Cruds{
+    display: flex;
+    flex-direction: row-reverse;
+    padding-top: 15px;
+}
+.crud-btn{
+    padding-right: 6px;
+    
+}
+.search-input{
+    margin: 10px;
+    
+}
+
+.header-section{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px;
+}
+
+.buttons-section-resource{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.resource-autocomplete-inputs{
+    display: flex;
+    align-items: center;
+    .ant-form-item{
+        min-width: 350px;
+        max-width: 600px;
+        margin-left: 32px;
+    }
+}

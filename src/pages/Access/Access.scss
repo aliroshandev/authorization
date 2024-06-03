@@ -1,0 +1,54 @@
+.access-section {
+  .info-table {
+    border-collapse: collapse;
+    width: 80%;
+    margin-top: 20px;
+    margin-right: 120px;
+    background-color: #edf1f0;
+  }
+  .info-table td,
+  .info-table th {
+    border: 1px solid rgb(221, 221, 221);
+  }
+  thead {
+    background-color: #ececec;
+  }
+  .info-table tr:hover {
+    background-color: rgb(235, 231, 231);
+  }
+  .search-form {
+    width: 80% !important;
+  }
+  .FormButtons {
+    // margin-right: 981px;
+    margin-top: 40px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+
+    button {
+      width: 150px;
+    }
+  }
+  .bold-text {
+    font-weight: bold;
+  }
+  .client-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    h3 {
+      margin-left: 8px;
+    }
+  }
+  .control-button {
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      span {
+        margin-left: 8px;
+      }
+    }
+  }
+}

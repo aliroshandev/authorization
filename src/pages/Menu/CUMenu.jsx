@@ -1,0 +1,126 @@
+import { useEffect, useMemo, useState } from "react";
+import { Form, notification } from "antd";
+import RenderElement from "components/RenderElement/RenderElement";
+
+import { FormButtons } from "../Buttons/Buttons";
+import "./CUMenu.scss";
+import { useAuth } from "utils/hooks/useAuth";
+import { useMutation, useQuery } from "react-query";
+
+const CUMenu = ({ onBack, clientId, selectedMenu }) => {
+  const { getApi, sendRequest } = useAuth();
+  const isCreate = !selectedMenu;
+  const [menuForm] = Form.useForm();
+  const [parentId, setParentId] = useState();
+  useEffect(() => {
+    if (selectedMenu) {
+      let { path, title } = selectedMenu;
+      menuForm.setFieldsValue({
+        path,
+        title,
+      });
+    }
+  }, [menuForm, selectedMenu]);
+
+  const { isLoading, mutate } = useMutation({
+    mutationFn: sendRequest,
+    onSuccess: () => {
+      notification.success({
+        message: "عملیات با موفقیت انجام شد",
+        placement: "bottomLeft",
+      });
+      onBack(true);
+    },
+    onError: () => {
+      notification.error({
+        message: "خطا در انجام عملیات",
+        placement: "bottomLeft",
+      });
+    },
+  });
+
+  const { response: responseClient } = useQuery(
+    "/api/clients?currentPage=1&pageSize=1000",
+    getApi
+  );
+
+  const { response: menus } = useQuery(
+    `/api/menus/client-id?clientId=${clientId}`,
+    getApi,
+    {
+      enabled: !!clientId,
+    }
+  );
+
+  const ITEMS = useMemo(
+    () => [
+      {
+        label: "عنوان",
+        name: "title",
+        type: "text",
+      },
+      {
+        label: "آدرس",
+        name: "path",
+        type: "text",
+      },
+      {
+        label: "سامانه",
+        name: "clientId",
+        type: "text",
+        isDisabled: true,
+        placeholder:
+          responseClient?.data?.find((client) => client.id === clientId)
+            ?.description || "عمومی",
+      },
+      ...(clientId && menus?.data?.length > 0
+        ? [
+            {
+              label: "منوی پدر",
+              name: "parentId",
+              type: "autocomplete",
+              data: menus?.data,
+              autoCompleteValue: "id",
+              autoCompleteTitle: "title",
+              handleChange(...rest) {
+                setParentId(rest[1]?.key);
+              },
+              disabled: menus?.data?.length > 0 ? false : true,
+            },
+          ]
+        : []),
+    ],
+    [responseClient?.data, clientId, menus?.data]
+  );
+
+  async function onSubmit() {
+    const temp = menuForm.getFieldsValue();
+    mutate({
+      method: isCreate ? "post" : "PUT",
+      endpoint: "api/menus",
+      data: {
+        ...(!isCreate && selectedMenu),
+        ...temp,
+        parentId,
+        clientId,
+      },
+    });
+  }
+
+  return (
+    <>
+      <Form form={menuForm} onFinish={onSubmit} className="sh-menu-item">
+        <div className="sh-countainer">
+          {ITEMS.map((item) => (
+            <RenderElement searchForm={menuForm} {...item} />
+          ))}
+        </div>
+        <div className="sh-button">
+          <FormButtons onBack={onBack} isUpdating={isLoading} />
+        </div>
+      </Form>
+    </>
+  );
+};
+
+export default CUMenu;

@@ -1,0 +1,11 @@
+
+.sh-countainer{
+    display: flex;
+    // justify-content: space-between;
+    flex-wrap: wrap;
+    
+}
+.sh-countainer>*{
+    flex: 1 1 400px;
+    padding: 0 15px;
+}

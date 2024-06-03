@@ -1,0 +1,65 @@
+.submit-btn{
+    background-color: #07a369;
+    border: solid 1px #07a369;
+    width: 88px;
+    font-size: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .button-spin{
+        span{
+            margin-right: 4px;
+            font-size: 18px;
+            display: flex   
+        }
+    }
+}
+.back-btn{
+    background-color: #ff3434;
+    color: white;
+    border: solid 1px #ff3434;
+    width: 88px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.submit-btn,.submit-btn:hover,.submit-btn:active{
+    background:#04af70 !important;
+    border: solid 1px #04af70 !important  ;
+    font-size: 21px !important;
+    color: white !important;
+}
+
+.submit-btn:disabled{
+    background:#a7a7a7 !important;
+    border: solid 1px #868686 !important  ;
+}
+.submit-btn span, .submit-btn:active span, .submit-btn:focus span {
+font-size: 16px !important;
+}
+
+.back-btn,.back-btn:hover,
+    .back-btn:active{
+    background: #f84c4c !important;
+    border: solid 1px #f84c4c !important  ;
+    
+}
+.custom-btn{
+    vertical-align: middle;
+    margin-right: 6px;
+    
+}
+.submit-btn > span {
+    font-size: 13px;
+}
+.back-btn > span {
+    font-size: 10   px;
+}
+
+.form-buttons-section{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
