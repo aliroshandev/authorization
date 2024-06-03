@@ -14,7 +14,7 @@ interface sendRequestType {
 }
 
 export const axiosInstance = axios.create({
-  baseURL: "http://192.168.4.22:8082",
+  baseURL: "http://46.34.188.212:8085",
 });
 
 export function useAuth() {
