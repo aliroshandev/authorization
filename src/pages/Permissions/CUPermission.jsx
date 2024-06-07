@@ -4,6 +4,8 @@ import React from "react";
 import { useMutation } from "react-query";
 import { useAuth } from "utils/hooks/useAuth";
 import { FormButtons } from "../Buttons/Buttons";
+import {useNavigate} from "react-router-dom";
+
 
 const CUPermission = ({ onBack, selectedPermission }) => {
   const { sendRequest } = useAuth();
@@ -12,6 +14,7 @@ const CUPermission = ({ onBack, selectedPermission }) => {
   });
   const isCreate = selectedPermission === "new";
   const [menuForm] = Form.useForm();
+  const navigate = useNavigate();
 
   const ITEMS = [
     {
@@ -23,20 +26,34 @@ const CUPermission = ({ onBack, selectedPermission }) => {
   ];
 
   async function onSubmit(values) {
-    const temp = menuForm.getFieldsValue();
+    const { title } = values
+    // const temp = menuForm.getFieldsValue();
     mutate({
       method: isCreate ? "post" : "PUT",
       endpoint: "api/permissions",
       data: {
-        ...(isCreate ? {} : { id: selectedPermission.id }),
-        ...temp,
+        ...(isCreate ? {} : {id: selectedPermission.id}),
+        ...{
+          title: title ?? selectedPermission.title, 
+          key: title ?? selectedPermission.title, 
+        }
       },
+    },
+    {
+      onSuccess: (res) => {
+        window.location.reload();
+      },
+      onError: (err) => {
+        console.log(err)
+        alert(err)
+      }
     });
   }
+
   return (
     <Form form={menuForm} onFinish={onSubmit}>
-      {ITEMS.map((item) => (
-        <RenderElement searchForm={menuForm} {...item} />
+      {ITEMS.map((item, index) => (
+        <RenderElement key={"CUPERM_" + (index)} searchForm={menuForm} {...item} />
       ))}
 
       <FormButtons onBack={onBack} />

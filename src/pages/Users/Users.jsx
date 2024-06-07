@@ -1,5 +1,5 @@
 import { Button, Table, Tooltip } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { AiFillEdit } from "react-icons/ai";
 import { useQuery } from "react-query";
@@ -10,7 +10,7 @@ const Users = () => {
   const { getApi } = useAuth();
   const [selectedUser, setSelectedUser] = useState();
   const {
-    response: roleData,
+    data: roleData,
     status,
     refetchApi,
   } = useQuery("/api/user?pageSize=10&currentPage=1", getApi);

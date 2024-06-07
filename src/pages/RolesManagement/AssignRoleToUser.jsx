@@ -4,25 +4,27 @@ import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useAuth } from "utils/hooks/useAuth";
 import { BackBtn } from "../Buttons/Buttons";
+import { useNavigate, useParams } from "react-router";
 
 const AssignRoleToUser = ({ onBack, selectedRole }) => {
   const { sendRequest, getApi } = useAuth();
   const [selectedUser, setSelectedUser] = useState();
+  const { id: clientId } = useParams();
 
   const {
-    response: assignedUsers,
+    data: assignedUsers,
     status: assignedUsersStatus,
     refetchApi: assignedUsersRefetch,
   } = useQuery(
-    `/api/user/get-by-client-and-role?clientId=${selectedRole.clientId}&roleName=${selectedRole.name}`,
+    `/api/user/get-by-client-and-role?clientId=${clientId}&roleName=${selectedRole.name}`,
     getApi,
     {
-      enabled: !!(selectedRole.clientId && selectedRole.name),
+      enabled: !!((selectedRole.clientId || clientId) && selectedRole.name),
     }
   );
 
   const {
-    response: users,
+    data: users,
     status: usersStatus,
     refetchApi: usersRefetch,
   } = useQuery(`/api/user?currentPage=1&pageSize=20`, getApi);
@@ -37,7 +39,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
         method: "POST",
         endpoint: "api/user/add-roles",
         data: {
-          clientId: selectedRole.clientId,
+          clientId: selectedRole.clientId?? clientId,
           userId: selectedUser.id,
           roles: [
             {
@@ -70,7 +72,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
     mutate(
       {
         method: "DELETE",
-        endpoint: `api/user/role-by-user-client-role?userId=${selectedUser.id}&clientId=${selectedRole.clientId}&roleName=${selectedRole.name}`,
+        endpoint: `api/user/role-by-user-client-role?userId=${selectedUser.id}&clientId=${selectedRole.clientId?? clientId}&roleName=${selectedRole.name}`,
       },
       {
         onSuccess: () => {
@@ -99,11 +101,11 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
       <div className="transfer-list">
         <div className="users-list transfer-container">
           <p>لیست کل کاربران</p>
-          {usersStatus === "pending" ? (
+          {usersStatus === "loading" ? (
             <Skeleton active loading paragraph />
-          ) : usersStatus === "rejected" ? (
+          ) : usersStatus === "error" ? (
             <ErrorSection handleRefresh={usersRefetch} />
-          ) : usersStatus === "resolved" ? (
+          ) : usersStatus === "success" ? (
             <ul>
               {users?.data?.rows?.map((user) => {
                 return (
@@ -147,11 +149,11 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
         </div>
         <div className="assigned-users-list transfer-container">
           <p>کاربران تخصیص داده شده</p>
-          {assignedUsersStatus === "pending" ? (
+          {assignedUsersStatus === "loading" ? (
             <Skeleton active loading paragraph />
-          ) : assignedUsersStatus === "rejected" ? (
+          ) : assignedUsersStatus === "error" ? (
             <ErrorSection handleRefresh={assignedUsersRefetch} />
-          ) : assignedUsersStatus === "resolved" ? (
+          ) : assignedUsersStatus === "success" ? (
             <ul>
               {assignedUsers?.data?.map((user) => {
                 return (

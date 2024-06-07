@@ -1,5 +1,5 @@
 import { Button, Table, Tooltip } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CrudBtn from "components/CrudBtn/CrudBtn";
 import CUPermission from "./CUPermission";
 import { AiFillEdit } from "react-icons/ai";
@@ -9,7 +9,10 @@ import { useAuth } from "utils/hooks/useAuth";
 const Permissions = () => {
   const { getApi } = useAuth();
   const [selectedPermission, setSelectedPermission] = useState();
-  const { response: roleData, isFetching } = useQuery(
+  const { 
+    data: roleData,
+    status,
+    refetchApi } = useQuery(
     "/api/permissions?pageSize=20&currentPage=1",
     getApi
   );
@@ -56,7 +59,7 @@ const Permissions = () => {
       <Table
         dataSource={roleData?.data?.rows || []}
         columns={columns}
-        loading={isFetching}
+        loading={status}
       />
       <CrudBtn onNew={() => setSelectedPermission("new")} />
     </>

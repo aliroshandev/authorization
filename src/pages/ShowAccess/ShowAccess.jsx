@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AutoComplete, Col, Row, Skeleton } from "antd";
 // import { useGetApiCall } from "base/hooks/useGetApiCall";
 import "./ShowAccess.scss";
@@ -7,9 +7,9 @@ import { useAuth } from "utils/hooks/useAuth";
 
 const ShowAccess = () => {
   const { getApi } = useAuth();
-  // const [selectedClientId, setSelectedClientId] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState("");
 
-  const { response: clients, status: clientsStatus } = useQuery(
+  const { data: clients, status: clientsStatus } = useQuery(
     "/api/clients",
     getApi
   );
@@ -25,14 +25,18 @@ const ShowAccess = () => {
             ) : (
               <AutoComplete
                 className="search-form"
-                // onSelect={(value, item) => {
-                //   setSelectedClientId(item.key);
-                // }}
+                onSelect={(value, item) => {
+                  setSelectedClientId(item.key);
+                  console.log(value, item)
+                }}
                 filterOption={(inputValue, option) =>
                   option.children.includes(inputValue)
                 }
                 placeholder={"سامانه را انتخاب کنید"}
                 allowClear
+                style={{
+                  width: 200,
+                }}
               >
                 {clients?.data
                   ?.filter((client) => client.description)

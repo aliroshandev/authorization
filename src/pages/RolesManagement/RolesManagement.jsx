@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import {
   AutoComplete,
   Button,
@@ -10,7 +11,7 @@ import {
 } from "antd";
 import { useMemo, useState } from "react";
 import ErrorSection from "components/ErrorSection/ErrorSection";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import RoleCrud from "./RoleCrud";
 import {
   AiFillEdit,
@@ -41,20 +42,20 @@ const RolesManagement = (props) => {
         placement: "bottomLeft",
       }),
   });
-  const { clientId } = props?.location?.state || 0;
+  const { id: clientId } = useParams();
   const [selectedClientId, setSelectedClientId] = useState(clientId);
   const [selectedRole, setSelectedRole] = useState();
   const [addUserRole, setAddUserRole] = useState(false);
   const {
-    response: clients,
+    data: clients,
     status: clientsStatus,
     refetchApi: clientsRefetch,
   } = useQuery("/api/clients", getApi);
 
   const {
-    response: roles,
+    data: roles,
     status: rolesStatus,
-    refetchApi: rolesRefetch,
+    refetch: rolesRefetch,
   } = useQuery(
     `/api/roles/client-id?clientId=${selectedClientId}&currentPage=1&pageSize=100`,
     getApi,
@@ -64,7 +65,15 @@ const RolesManagement = (props) => {
   );
 
   async function handleDelete(data) {
-    mutate({ method: "DELETE", endpoint: "api/roles", data });
+    console.log(data)
+    mutate({
+      method: "DELETE", 
+      endpoint: "api/roles",  
+      data: {
+        ...data,
+        clientId: selectedClientId
+      }
+    });
   }
 
   const columns = useMemo(
@@ -152,17 +161,17 @@ const RolesManagement = (props) => {
 
   return (
     <div>
-      {clientsStatus === "pending" ? (
+      {clientsStatus === "loading" ? (
         <Skeleton.Input active />
-      ) : clientsStatus === "rejected" ? (
+      ) : clientsStatus === "error" ? (
         <ErrorSection handleRefresh={clientsRefetch} />
-      ) : clientsStatus === "resolved" && clients?.data ? (
+      ) : clientsStatus === "success" && clients?.data ? (
         <>
           <Form.Item label="سامانه" className="autocomplete-input">
             <AutoComplete
               onSelect={(value, item) => {
                 setSelectedClientId(item.key);
-                navigate(`/management/roles-management/${item.key}`);
+                navigate(`/roles-management/${item.key}`);
               }}
               filterOption={(inputValue, option) =>
                 option.children.includes(inputValue)
@@ -192,16 +201,16 @@ const RolesManagement = (props) => {
         <></>
       )}
 
-      {rolesStatus === "resolved" ? (
+      {rolesStatus === "success" ? (
         <>
           <Table
-            loading={rolesStatus === "pending" || isLoading}
+            // loading={rolesStatus === "loading" || isLoading}
             columns={columns}
-            dataSource={roles?.data?.rows}
+            dataSource={roles?.data}
           />
           <CrudBtn onNew={() => setSelectedRole("create")} />
         </>
-      ) : rolesStatus === "rejected" ? (
+      ) : rolesStatus === "error" ? (
         <ErrorSection handleRefresh={rolesRefetch} />
       ) : (
         <></>

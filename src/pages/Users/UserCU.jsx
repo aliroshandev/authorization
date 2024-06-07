@@ -12,19 +12,19 @@ const UserCU = ({ selectedRole, onBack }) => {
   const { sendRequest } = useAuth();
   const { isLoading, mutate } = useMutation({
     mutationFn: sendRequest,
-    onSuccess: () => {
-      onBack(true);
-      notification.success({
-        message: "عملیات با موفقیت انجام شد",
-        placement: "bottomLeft",
-      });
-    },
+    // onSuccess: () => {
+    //   onBack(true);
+    //   notification.success({
+    //     message: "عملیات با موفقیت انجام شد",
+    //     placement: "bottomLeft",
+    //   });
+    // },
 
-    onError: () =>
-      notification.error({
-        message: "خطا در انجام عملیات",
-        placement: "bottomLeft",
-      }),
+    // onError: () =>
+    //   notification.error({
+    //     message: "خطا در انجام عملیات",
+    //     placement: "bottomLeft",
+    //   }),
   });
   const IS_CREATE = selectedRole === "create";
   const [roleForm] = useForm();
@@ -36,21 +36,21 @@ const UserCU = ({ selectedRole, onBack }) => {
         label: "نام ",
         type: "text",
         size: 8,
-        defaultValue: selectedRole?.firstName,
+        // defaultValue: selectedRole?.firstName,
       },
       {
         name: "lastName",
         label: "نام خانوادگی",
         type: "text",
         size: 8,
-        defaultValue: selectedRole?.lastName,
+        // defaultValue: selectedRole?.lastName,
       },
       {
         name: "username",
         label: "نام کاربری",
         type: "text",
         size: 8,
-        defaultValue: selectedRole?.username,
+        // defaultValue: selectedRole?.username,
         rules: [
           {
             required: true,
@@ -73,6 +73,7 @@ const UserCU = ({ selectedRole, onBack }) => {
         temp[key] = value;
       }
     }
+    console.log(data)
     mutate({
       method: IS_CREATE ? "POST" : "PUT",
       endpoint: "api/user",
@@ -80,11 +81,32 @@ const UserCU = ({ selectedRole, onBack }) => {
         ...(!IS_CREATE && selectedRole),
         ...temp,
       },
+    },{
+      onSuccess: (res) => {
+        notification.success({
+          message: "عملیات با موفقیت انجام شد",
+          placement: "bottomLeft",
+        });
+        setTimeout(()=>{
+          window.location.reload();
+        }, 2000)
+      },
+      onError: (err) => {
+        console.log(err)
+        notification.error({
+          message: "خطا در انجام عملیات",
+          placement: "bottomLeft",
+        })
+      }
     });
   }
 
   return (
-    <Form onFinish={onSubmit}>
+    <Form onFinish={onSubmit} initialValues={{
+      ["firstName"]: selectedRole?.firstName,
+      ["lastName"]: selectedRole?.lastName,
+      ["username"]: selectedRole?.username,
+    }}>
       <Row>
         {ITEMS.map((item) => (
           <Col key={item.name} span={item.size}>

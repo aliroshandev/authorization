@@ -36,7 +36,7 @@ const RoleCrud = ({ selectedRole, onBack, clientId }) => {
         label: "نام انگلیسی",
         type: "text",
         size: 8,
-        defaultValue: selectedRole?.name,
+        // defaultValue: selectedRole?.name,
         rules: [
           {
             required: true,
@@ -53,7 +53,7 @@ const RoleCrud = ({ selectedRole, onBack, clientId }) => {
         label: "نام فارسی",
         type: "text",
         size: 8,
-        defaultValue: selectedRole?.description,
+        // defaultValue: selectedRole?.description,
         rules: [
           {
             required: true,
@@ -85,7 +85,12 @@ const RoleCrud = ({ selectedRole, onBack, clientId }) => {
   }
 
   return (
-    <Form onFinish={onSubmit}>
+    <Form onFinish={onSubmit} 
+      initialValues={{
+        ["name"]: selectedRole?.name,
+        ["description"]: selectedRole?.description,
+      }}
+    >
       <Row>
         {ITEMS.map((item) => (
           <Col key={item.name} span={item.size}>
@@ -95,7 +100,7 @@ const RoleCrud = ({ selectedRole, onBack, clientId }) => {
         <Col span={8} className="role-crud-checkbox">
           <Form.Item label={"فعال باشد"} name="composite">
             <Checkbox
-              defaultChecked={isActive}
+              checked={isActive}
               onChange={(e) => setIsActive(e.target.checked)}
             />
           </Form.Item>
