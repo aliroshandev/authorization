@@ -29,7 +29,7 @@ root.render(
       }}
       direction="rtl"
     >
-      <BrowserRouter>
+      <BrowserRouter basename="/roles">
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>

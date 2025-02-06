@@ -14,42 +14,13 @@ interface sendRequestType {
 }
 
 export const axiosInstance = axios.create({
-  baseURL: "http://46.34.180.212:8000",
+  baseURL: "https://auth.betaja.ir/auth-api/",
 });
 
 export function useAuth() {
   const [token, setToken] = useSessionStorageState("token");
   const [refresh_token, setRefresh_Token] =
     useSessionStorageState("refreshToken");
-  const refreshToken = () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${token}`);
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("client_id", "residence-ui");
-    urlencoded.append("client_secret", "ZrWUmP2RSCUBm5JvmSL4QLh5B5PqIm4b");
-    urlencoded.append("refresh_token", refresh_token);
-    urlencoded.append("grant_type", "refresh_token");
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      // redirect: 'follow'
-    };
-
-    fetch(
-      "http://192.180.9.79:9080/auth/realms/mtna/protocol/openid-connect/token",
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        setToken(result.access_token);
-        setRefresh_Token(result.refresh_token);
-      })
-      .catch((error) => console.log("error", error));
-  };
 
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -59,7 +30,6 @@ export function useAuth() {
       const originalRequest = error.config;
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
-        await refreshToken();
         // axiosInstance.defaults.headers.common.Authorization = `Bearer ${refreshedToken}`;
         return axiosInstance(originalRequest);
       }
