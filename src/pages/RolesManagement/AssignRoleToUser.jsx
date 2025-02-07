@@ -16,7 +16,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
     status: assignedUsersStatus,
     refetchApi: assignedUsersRefetch,
   } = useQuery(
-    `/api/user/get-by-client-and-role?clientId=${clientId}&roleName=${selectedRole.name}`,
+    `user/get-by-client-and-role?clientId=${clientId}&roleName=${selectedRole.name}`,
     getApi,
     {
       enabled: !!((selectedRole.clientId || clientId) && selectedRole.name),
@@ -27,7 +27,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
     data: users,
     status: usersStatus,
     refetchApi: usersRefetch,
-  } = useQuery(`/api/user?currentPage=1&pageSize=20`, getApi);
+  } = useQuery(`user?currentPage=1&pageSize=20`, getApi);
 
   const { mutate } = useMutation({
     mutationFn: sendRequest,
@@ -37,7 +37,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
     mutate(
       {
         method: "POST",
-        endpoint: "api/user/add-roles",
+        endpoint: "user/add-roles",
         data: {
           clientId: selectedRole.clientId?? clientId,
           userId: selectedUser.id,
@@ -72,7 +72,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
     mutate(
       {
         method: "DELETE",
-        endpoint: `api/user/role-by-user-client-role?userId=${selectedUser.id}&clientId=${selectedRole.clientId?? clientId}&roleName=${selectedRole.name}`,
+        endpoint: `user/role-by-user-client-role?userId=${selectedUser.id}&clientId=${selectedRole.clientId?? clientId}&roleName=${selectedRole.name}`,
       },
       {
         onSuccess: () => {

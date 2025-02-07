@@ -12,26 +12,26 @@ const RoleResource = () => {
   const [resourceId, setResourceId] = useState();
   const [roleId, setRoleId] = useState();
 
-  const { response: clients } = useQuery("/api/clients", getApi, {
+  const { response: clients } = useQuery("clients", getApi, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
   const { response: menus } = useQuery(
-    `/api/menus/client-id?clientId=${selectedClientId}`,
+    `menus/client-id?clientId=${selectedClientId}`,
     getApi,
     {
       enabled: !!selectedClientId,
     }
   );
   const { response: resources } = useQuery(
-    `/api/resources/menu-id?menuId=${selectedMenuId}`,
+    `resources/menu-id?menuId=${selectedMenuId}`,
     getApi,
     {
       enabled: !!selectedMenuId,
     }
   );
 
-  const { response: roles } = useQuery("/api/roles", getApi, {
+  const { response: roles } = useQuery("roles", getApi, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
@@ -116,7 +116,7 @@ const RoleResource = () => {
   async function submitHandler() {
     mutate({
       method: "POST",
-      endpoint: "api/role-resources",
+      endpoint: "role-resources",
       data: {
         resourceId,
         roleId,

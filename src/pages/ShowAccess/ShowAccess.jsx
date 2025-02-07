@@ -10,7 +10,7 @@ const ShowAccess = () => {
   const [selectedClientId, setSelectedClientId] = useState("");
 
   const { data: clients, status: clientsStatus } = useQuery(
-    "/api/clients",
+    "clients",
     getApi
   );
 

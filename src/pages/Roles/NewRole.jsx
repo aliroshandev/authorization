@@ -10,10 +10,10 @@ function NewRole({ setIsAddPushed }) {
   const [resourceId, setResourceId] = useState();
 
   const { response: resources } = useGetApiCall({
-    endpoint: "api/resources?pageSize=100&currentPage=1",
+    endpoint: "resources?pageSize=100&currentPage=1",
   });
   const { response: role } = useGetApiCall({
-    endpoint: "api/roles?pageSize=100&currentPage=1",
+    endpoint: "roles?pageSize=100&currentPage=1",
   });
 
   const ITEMS = [
@@ -44,7 +44,7 @@ function NewRole({ setIsAddPushed }) {
   const submitHandler = () => {
     asyncHttpRequest({
       method: "POST",
-      endpoint: "api/role-resources/",
+      endpoint: "role-resources/",
       data: {
         roleId,
         resourceId,

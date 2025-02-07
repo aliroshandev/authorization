@@ -30,7 +30,7 @@ const CUPermission = ({ onBack, selectedPermission }) => {
     // const temp = menuForm.getFieldsValue();
     mutate({
       method: isCreate ? "post" : "PUT",
-      endpoint: "api/permissions",
+      endpoint: "permissions",
       data: {
         ...(isCreate ? {} : {id: selectedPermission.id}),
         ...{

@@ -74,7 +74,7 @@ const RoleCrud = ({ selectedRole, onBack, clientId }) => {
     }
     mutate({
       method: IS_CREATE ? "POST" : "PUT",
-      endpoint: "api/roles",
+      endpoint: "roles",
       data: {
         ...(!IS_CREATE && selectedRole),
         ...temp,

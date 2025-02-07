@@ -25,13 +25,13 @@ const CrudResource = ({
     },
   });
 
-  const { response: menu } = useQuery(`/api/menus/id/${menuId}`, getApi);
+  const { response: menu } = useQuery(`menus/id/${menuId}`, getApi);
   const { response: resources, status: resourceStatus } = useQuery(
-    "/api/resources?currentPage=1&pageSize=20",
+    "resources?currentPage=1&pageSize=20",
     getApi
   );
   const { response: resourceType, status: resourceTypeStatus } = useQuery(
-    "/api/resource-types?pageSize=20&currentPage=1",
+    "resource-types?pageSize=20&currentPage=1",
     getApi
   );
 
@@ -117,7 +117,7 @@ const CrudResource = ({
     }
     mutate({
       method: isCreate ? "POST" : "PUT",
-      endpoint: "api/resources",
+      endpoint: "resources",
       data: {
         ...(!isCreate && selectedResource),
 

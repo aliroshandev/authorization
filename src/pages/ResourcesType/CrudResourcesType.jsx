@@ -28,7 +28,7 @@ const CrudResourcesType = ({ onBack, selectedResource, isCreate }) => {
   const submitHandler = (data) => {
     mutate({
       method: isCreate ? "POST" : "PUT",
-      endpoint: "api/resource-types/",
+      endpoint: "resource-types/",
       data: {
         ...(isCreate ? {} : { id: selectedResource.id }),
         ...data,

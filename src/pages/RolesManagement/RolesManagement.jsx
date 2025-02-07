@@ -50,14 +50,14 @@ const RolesManagement = (props) => {
     data: clients,
     status: clientsStatus,
     refetchApi: clientsRefetch,
-  } = useQuery("/api/clients", getApi);
+  } = useQuery("clients", getApi);
 
   const {
     data: roles,
     status: rolesStatus,
     refetch: rolesRefetch,
   } = useQuery(
-    `/api/roles/client-id?clientId=${selectedClientId}&currentPage=1&pageSize=100`,
+    `roles/client-id?clientId=${selectedClientId}&currentPage=1&pageSize=100`,
     getApi,
     {
       enabled: !!selectedClientId,
@@ -68,7 +68,7 @@ const RolesManagement = (props) => {
     console.log(data)
     mutate({
       method: "DELETE", 
-      endpoint: "api/roles",  
+      endpoint: "roles",  
       data: {
         ...data,
         clientId: selectedClientId

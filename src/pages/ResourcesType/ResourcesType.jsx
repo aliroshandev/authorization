@@ -11,7 +11,7 @@ const ResourcesType = () => {
   const { getApi } = useAuth();
   const [selectedResource, setSelectedResource] = useState();
   const { response, status, refetchApi } = useQuery(
-    "/api/resource-types?pageSize=10&currentPage=1",
+    "resource-types?pageSize=10&currentPage=1",
     getApi
   );
 

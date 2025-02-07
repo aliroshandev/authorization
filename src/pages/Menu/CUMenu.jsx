@@ -40,12 +40,12 @@ const CUMenu = ({ onBack, clientId, selectedMenu }) => {
   });
 
   const { response: responseClient } = useQuery(
-    "/api/clients?currentPage=1&pageSize=1000",
+    "clients?currentPage=1&pageSize=1000",
     getApi
   );
 
   const { response: menus } = useQuery(
-    `/api/menus/client-id?clientId=${clientId}`,
+    `menus/client-id?clientId=${clientId}`,
     getApi,
     {
       enabled: !!clientId,
@@ -97,7 +97,7 @@ const CUMenu = ({ onBack, clientId, selectedMenu }) => {
     const temp = menuForm.getFieldsValue();
     mutate({
       method: isCreate ? "post" : "PUT",
-      endpoint: "api/menus",
+      endpoint: "menus",
       data: {
         ...(!isCreate && selectedMenu),
         ...temp,

@@ -13,7 +13,7 @@ const Users = () => {
     data: roleData,
     status,
     refetchApi,
-  } = useQuery("/api/user?pageSize=10&currentPage=1", getApi);
+  } = useQuery("user?pageSize=10&currentPage=1", getApi);
 
   const columns = [
     {
