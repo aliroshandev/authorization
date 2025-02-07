@@ -30,6 +30,9 @@ function App() {
       if (urlParams.has("token")) {
         queueMicrotask(() => {
           setToken(urlParams.get("token") ?? '');
+          setTimeout(() => {
+            navigate("/");
+          }, 1000);
         });
         // setToken(urlParams.get("token") ?? '');
         // dispatch(ACT_SetAccessToken(urlParams.get('token')));
@@ -38,10 +41,6 @@ function App() {
       }
     } catch (error) {
 
-    } finally {
-      setTimeout(() => {
-        navigate("dashboard");
-      }, 1000);
     }
     // if (
     //   window.location.pathname === "/" &&
