@@ -18,9 +18,9 @@ export const axiosInstance = axios.create({
 });
 
 export function useAuth() {
-  const [token, setToken] = useSessionStorageState("token");
-  const [refresh_token, setRefresh_Token] =
-    useSessionStorageState("refreshToken");
+  const [token,] = useSessionStorageState("token");
+  // const [refresh_token, setRefresh_Token] =
+  //   useSessionStorageState("refreshToken");
 
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -38,13 +38,13 @@ export function useAuth() {
   );
 
   async function getApi({
-    queryKey,
-  }: {
+                          queryKey,
+                        }: {
     queryKey: (string | number | boolean)[];
   }) {
     let request = queryKey.join("/");
     try {
-      const { data } = await axiosInstance.get(request, {
+      const {data} = await axiosInstance.get(request, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -56,12 +56,12 @@ export function useAuth() {
   }
 
   async function sendRequest({
-    method,
-    endpoint,
-    query = null,
-    data = {},
-    headers = {},
-  }: sendRequestType) {
+                               method,
+                               endpoint,
+                               query = null,
+                               data = {},
+                               headers = {},
+                             }: sendRequestType) {
     return await axiosInstance(endpoint, {
       method,
       headers: {
@@ -73,5 +73,5 @@ export function useAuth() {
     });
   }
 
-  return { getApi, sendRequest };
+  return {getApi, sendRequest};
 }
