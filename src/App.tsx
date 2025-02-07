@@ -12,8 +12,8 @@ const { Content } = Layout;
 
 function App() {
   const navigate = useNavigate();
-  const [, setToken] = useSessionStorageState("token");
-  const [, setRefreshToken] = useSessionStorageState("refreshToken");
+  const [token, setToken] = useSessionStorageState("token");
+  // const [, setRefreshToken] = useSessionStorageState("refreshToken");
 
   const [isRightMenuCollapsed, setIsRightMenuCollapsed] =
     useState<boolean>(false);
@@ -25,19 +25,36 @@ function App() {
   // }, [token, refreshToken]);
 
   useEffect(() => {
-    if (
-      window.location.pathname === "/" &&
-      window.location?.search?.length > 10
-    ) {
-      let param: { token?: string; refreshToken?: string } & URLSearchParams =
-        new Proxy(new URLSearchParams(window.location?.search), {
-          get: (searchParam, props) => searchParam.get(String(props)),
+    const urlParams = new URLSearchParams(window.location.search);
+    try {
+      if (urlParams.has("token")) {
+        queueMicrotask(() => {
+          setToken(urlParams.get("token") ?? '');
         });
-      setToken(param.token);
-      setRefreshToken(param.refreshToken);
-      navigate("/");
+        // setToken(urlParams.get("token") ?? '');
+        // dispatch(ACT_SetAccessToken(urlParams.get('token')));
+      } else if (!token) {
+        navigate("login");
+      }
+    } catch (error) {
+
+    } finally {
+      setTimeout(() => {
+        navigate("dashboard");
+      }, 1000);
     }
-  }, [navigate, setRefreshToken, setToken]);
+    // if (
+    //   window.location.pathname === "/" &&
+    //   window.location?.search?.length > 10
+    // ) {
+    //   let param: { token?: string; refreshToken?: string } & URLSearchParams =
+    //     new Proxy(new URLSearchParams(window.location?.search), {
+    //       get: (searchParam, props) => searchParam.get(String(props)),
+    //     });
+    //   setToken(param.token);
+    //   navigate("/");
+    // }
+  }, [navigate, setToken]);
 
   return (
     <div className="app">
