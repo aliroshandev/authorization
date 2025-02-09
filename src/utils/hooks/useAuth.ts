@@ -91,13 +91,11 @@ export function useAuth() {
   }) {
     let request = queryKey.join("/");
     try {
-      const {data} = await axiosInstance.get(request, {
+      return await axiosInstance.get(request, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
-      return data;
     } catch (error) {
       throw new Error();
     }
