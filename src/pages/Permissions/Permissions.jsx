@@ -12,7 +12,7 @@ const Permissions = () => {
   const { 
     data: roleData,
     status,
-    refetchApi } = useQuery(
+    refetch } = useQuery(
     "/permissions?pageSize=20&currentPage=1",
     getApi
   );

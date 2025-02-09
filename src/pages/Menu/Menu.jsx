@@ -20,7 +20,7 @@ const ManageSystemMenu = () => {
   const {
     data: clientsData,
     status: clientsStatus,
-    refetchApi: clientsRefetch,
+    refetch: clientsRefetch,
   } = useQuery("/clients", getApi, {
     onSuccess: (response) => {
       console.log(response);
@@ -33,7 +33,7 @@ const ManageSystemMenu = () => {
   const {
     data: responseMenu,
     status,
-    refetchApi: responseMenuRefetch,
+    refetch: responseMenuRefetch,
   } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });

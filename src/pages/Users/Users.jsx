@@ -12,7 +12,7 @@ const Users = () => {
   const {
     data: roleData,
     status,
-    refetchApi,
+    refetch,
   } = useQuery("/user?pageSize=10&currentPage=1", getApi);
 
   const columns = [
@@ -51,7 +51,7 @@ const Users = () => {
 
   function handleBack(needRefresh) {
     if (needRefresh) {
-      refetchApi();
+      refetch();
     }
     setSelectedUser();
   }

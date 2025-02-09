@@ -22,13 +22,13 @@ const Access = () => {
   const {
     data: clients,
     status: clientsStatus,
-    refetchApi: clientsRefetch,
+    refetch: clientsRefetch,
   } = useQuery("/clients", getApi);
 
   const {
     data: menus,
     status: menusStatus,
-    refetchApi: menusRefetch,
+    refetch: menusRefetch,
   } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });
@@ -36,7 +36,7 @@ const Access = () => {
   const {
     data: resources,
     status: resourcesStatus,
-    refetchApi: resourcesRefetch,
+    refetch: resourcesRefetch,
   } = useQuery(`/resources/menu-id?menuId=${selectedMenuId}`, getApi, {
     enabled: !!selectedMenuId,
   });
@@ -44,7 +44,7 @@ const Access = () => {
   const {
     data: roles,
     status: rolesStatus,
-    refetchApi: rolesRefetch,
+    refetch: rolesRefetch,
   } = useQuery("/roles?pageSize=100&currentPage=1", getApi);
 
   const { data: permissions } = useQuery(

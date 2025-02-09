@@ -49,7 +49,7 @@ const RolesManagement = (props) => {
   const {
     data: clients,
     status: clientsStatus,
-    refetchApi: clientsRefetch,
+    refetch: clientsRefetch,
   } = useQuery("/clients", getApi);
 
   const {

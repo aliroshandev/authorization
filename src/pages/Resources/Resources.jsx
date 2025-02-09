@@ -30,18 +30,18 @@ const Resources = (props) => {
   const {
     data: clients,
     status: clientsStatus,
-    refetchApi: clientsRefetch,
+    refetch: clientsRefetch,
   } = useQuery("/clients", getApi);
 
   const {
     data: menus,
     status: menusStatus,
-    refetchApi: menusRefetch,
+    refetch: menusRefetch,
   } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });
 
-  const { response, isFetching, refetchApi } = useQuery(
+  const { response, isFetching, refetch } = useQuery(
     `/resources/menu-id?menuId=${menuId}`,
     getApi,
     {
@@ -99,7 +99,7 @@ const Resources = (props) => {
     return (
       <CrudResource
         onBack={() => setSelectedResource("")}
-        refetch={refetchApi}
+        refetch={refetch}
         clientId={selectedClientId}
         menuId={menuId}
         isCreate={selectedResource === "create"}

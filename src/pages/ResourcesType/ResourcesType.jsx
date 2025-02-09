@@ -10,7 +10,7 @@ import CrudResourcesType from "./CrudResourcesType";
 const ResourcesType = () => {
   const { getApi } = useAuth();
   const [selectedResource, setSelectedResource] = useState();
-  const { response, status, refetchApi } = useQuery(
+  const { response, status, refetch } = useQuery(
     "/resource-types?pageSize=10&currentPage=1",
     getApi
   );
@@ -45,7 +45,7 @@ const ResourcesType = () => {
         isCreate={selectedResource === "create"}
         selectedResource={selectedResource}
         onBack={(needRefresh) => {
-          refetchApi();
+          refetch();
           setSelectedResource("");
         }}
       />
@@ -59,7 +59,7 @@ const ResourcesType = () => {
         loading={status === "loading"}
         dataSource={response?.data?.rows}
       />
-      {status === "error" && <ErrorSection handleRefresh={refetchApi} />}
+      {status === "error" && <ErrorSection handleRefresh={refetch} />}
       <CrudBtn onNew={() => setSelectedResource("create")} />
     </>
   );
