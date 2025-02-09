@@ -33,7 +33,8 @@ const ManageSystemMenu = () => {
 
   useEffect(() => {
     console.log(clientsData);
-  }, [clientsData])
+    console.log(clientsStatus);
+  }, [clientsData, clientsStatus])
 
   const columns = [
     {
@@ -111,7 +112,7 @@ const ManageSystemMenu = () => {
         <div className="skeleton-section">
           <Skeleton.Input active className="skeleton" />
         </div>
-      ) : clientsStatus === "success" && clientsData?.data ? (
+      ) : clientsStatus === "success"/* && clientsData?.data*/ ? (
         <div className="client-section">
           <AutoComplete
             onSelect={(value, item) => {
