@@ -1,4 +1,4 @@
-import {AutoComplete, Button, Skeleton, Table, Tooltip} from "antd";
+import {AutoComplete, Button, notification, Popconfirm, Skeleton, Table, Tooltip} from "antd";
 import {useEffect, useState} from "react";
 import CrudBtn from "components/CrudBtn/CrudBtn";
 import CUMenu from "./CUMenu";
@@ -7,14 +7,29 @@ import ErrorSection from "components/ErrorSection/ErrorSection";
 import {AiFillEdit, AiOutlineDelete, AiOutlineOrderedList,} from "react-icons/ai";
 import {useNavigate, useParams} from "react-router";
 import {Link} from "react-router-dom";
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {useAuth} from "utils/hooks/useAuth";
 
 const ManageSystemMenu = () => {
-  const { id } = useParams();
-  const { getApi } = useAuth();
+  const {id} = useParams();
+  const {getApi, sendRequest} = useAuth();
   const [state, setState] = useState("");
   const [selectedClientId, setSelectedClientId] = useState(id);
+  const {isLoading, mutate} = useMutation({
+    mutationFn: sendRequest,
+    onSuccess: () => {
+      notification.success({
+        message: "عملیات با موفقیت انجام شد",
+        placement: "bottomLeft",
+      });
+    },
+    onError: () => {
+      notification.error({
+        message: "خطا در انجام عملیات",
+        placement: "bottomLeft",
+      });
+    },
+  });
 
   const navigate = useNavigate();
   const {
@@ -40,7 +55,29 @@ const ManageSystemMenu = () => {
 
   useEffect(() => {
     console.log(clientsData?.data);
-  }, [clientsData?.data, clientsStatus])
+  }, [clientsData?.data, clientsStatus]);
+
+  const handleDelete = (value) => {
+    mutate({
+        method: "DELETE",
+        endpoint: `api/menus/${value.id}`,
+      },
+      {
+        onSuccess: () => {
+          notification.success({
+            message: "عملیات حذف با موفقیت انجام شد",
+            placement: "bottomLeft",
+          });
+          responseMenuRefetch();
+        },
+        onError: (err) => {
+          notification.error({
+            message: err?.message || "خطا در حذف",
+            placement: "bottomLeft",
+          });
+        },
+      })
+  };
 
   const columns = [
     {
@@ -50,12 +87,17 @@ const ManageSystemMenu = () => {
       },
     },
     {
+      title: "منوی پدر",
+      dataIndex: "parentName",
+      render: (item) => <>{item ?? "-"}</>,
+    },
+    {
       title: "عنوان",
       dataIndex: "title",
     },
     {
-      title: "مسیر",
-      dataIndex: "path",
+      title: "کلید",
+      dataIndex: "key",
     },
     {
       title: "عملیات",
@@ -66,21 +108,26 @@ const ManageSystemMenu = () => {
             <Button>
               <Link
                 to={{
-                  pathname: `/management/resources/${value.id}`,
-                  state: { clientId: selectedClientId },
+                  pathname: `/resources/${value.id}`,
+                  state: {clientId: selectedClientId},
                 }}
-                state={{ id: value.id }}
+                state={{id: value.id}}
               >
-                <AiOutlineOrderedList />
+                <AiOutlineOrderedList/>
               </Link>
             </Button>
           </Tooltip>
-          <Button>
-            <AiOutlineDelete />
-          </Button>
+          <Popconfirm
+            title="آیا از حذف منو اطمینان دارید؟"
+            onConfirm={() => handleDelete(value)}
+          >
+            <Button>
+              <AiOutlineDelete/>
+            </Button>
+          </Popconfirm>
           <Tooltip title="ویرایش">
             <Button onClick={() => setState(value)}>
-              <AiFillEdit />
+              <AiFillEdit/>
             </Button>
           </Tooltip>
         </div>
@@ -96,7 +143,7 @@ const ManageSystemMenu = () => {
   }
 
   if (state === "new") {
-    return <CUMenu onBack={handleBack} clientId={selectedClientId} />;
+    return <CUMenu onBack={handleBack} clientId={selectedClientId}/>;
   }
 
   if (state) {
@@ -113,10 +160,10 @@ const ManageSystemMenu = () => {
     <div className="menu-section">
       <h3>سامانه:</h3>
       {clientsStatus === "error" ? (
-        <ErrorSection handleRefresh={clientsRefetch} />
+        <ErrorSection handleRefresh={clientsRefetch}/>
       ) : clientsStatus === "loading" ? (
         <div className="skeleton-section">
-          <Skeleton.Input active className="skeleton" />
+          <Skeleton.Input active className="skeleton"/>
         </div>
       ) : clientsStatus === "success"/* && clientsData?.data*/ ? (
         <div className="client-section">
