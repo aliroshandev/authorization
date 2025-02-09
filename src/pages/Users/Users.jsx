@@ -1,9 +1,9 @@
-import { Button, Table, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import {Button, Table, Tooltip} from "antd";
+import React, {useState} from "react";
 
-import { AiFillEdit } from "react-icons/ai";
-import { useQuery } from "react-query";
-import { useAuth } from "../../utils/hooks/useAuth";
+import {AiFillEdit} from "react-icons/ai";
+import {useQuery} from "react-query";
+import {useAuth} from "../../utils/hooks/useAuth";
 import UserCU from "./UserCU";
 
 const Users = () => {

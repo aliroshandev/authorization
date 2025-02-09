@@ -1,18 +1,19 @@
-import { Button, Table, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import {Button, Table, Tooltip} from "antd";
+import {useState} from "react";
 import CrudBtn from "components/CrudBtn/CrudBtn";
 import CUPermission from "./CUPermission";
-import { AiFillEdit } from "react-icons/ai";
-import { useQuery } from "react-query";
-import { useAuth } from "utils/hooks/useAuth";
+import {AiFillEdit} from "react-icons/ai";
+import {useQuery} from "react-query";
+import {useAuth} from "utils/hooks/useAuth";
 
 const Permissions = () => {
-  const { getApi } = useAuth();
+  const {getApi} = useAuth();
   const [selectedPermission, setSelectedPermission] = useState();
-  const { 
+  const {
     data: roleData,
     status,
-    refetch } = useQuery(
+    refetch
+  } = useQuery(
     "/permissions?pageSize=20&currentPage=1",
     getApi
   );
@@ -38,7 +39,7 @@ const Permissions = () => {
             danger
             onClick={() => setSelectedPermission(value)}
           >
-            <AiFillEdit className="icon" />
+            <AiFillEdit className="icon"/>
           </Button>
         </Tooltip>
       ),
@@ -50,6 +51,7 @@ const Permissions = () => {
       <CUPermission
         onBack={() => setSelectedPermission()}
         selectedPermission={selectedPermission}
+        refetch={refetch}
       />
     );
   }
@@ -61,7 +63,7 @@ const Permissions = () => {
         columns={columns}
         loading={status}
       />
-      <CrudBtn onNew={() => setSelectedPermission("new")} />
+      <CrudBtn onNew={() => setSelectedPermission("new")}/>
     </>
   );
 };
