@@ -37,7 +37,7 @@ function App() {
         // setToken(urlParams.get("token") ?? '');
         // dispatch(ACT_SetAccessToken(urlParams.get('token')));
       } else if (!token) {
-        navigate("login");
+        window.location.href = process.env.REACT_APP_LOGIN ?? '/login';
       }
     } catch (error) {
 
