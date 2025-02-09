@@ -37,7 +37,7 @@ const Resources = (props) => {
     data: menus,
     status: menusStatus,
     refetch: menusRefetch,
-  } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
+  } = useQuery(`/menus/id/${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });
 

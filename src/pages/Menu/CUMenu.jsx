@@ -45,7 +45,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
   );
 
   const {data: menus} = useQuery(
-    `menus/client-id?clientId=${clientId}`,
+    `menus/id/${clientId}`,
     getApi,
     {
       enabled: !!clientId,

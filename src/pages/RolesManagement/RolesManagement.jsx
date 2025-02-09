@@ -57,7 +57,7 @@ const RolesManagement = (props) => {
     status: rolesStatus,
     refetch: rolesRefetch,
   } = useQuery(
-    `/roles/client-id?clientId=${selectedClientId}&currentPage=1&pageSize=100`,
+    `/roles/id/${selectedClientId}&currentPage=1&pageSize=100`,
     getApi,
     {
       enabled: !!selectedClientId,
