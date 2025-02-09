@@ -56,9 +56,9 @@ const CrudResource = ({
         label: "پدر",
         type: "autocomplete",
         data:
-          resourceStatus === "pending" || resourceStatus === "rejected"
+          resourceStatus === "loading" || resourceStatus === "error"
             ? []
-            : resourceStatus === "resolved"
+            : resourceStatus === "success"
             ? resources?.data?.rows
             : [],
         autoCompleteValue: "id",
@@ -83,9 +83,9 @@ const CrudResource = ({
         label: "نوع",
         type: "dropdown",
         options:
-          resourceTypeStatus === "pending" || resourceTypeStatus === "rejected"
+          resourceTypeStatus === "loading" || resourceTypeStatus === "error"
             ? []
-            : resourceTypeStatus === "resolved"
+            : resourceTypeStatus === "success"
             ? resourceType?.data?.rows
             : [],
         autoCompleteValue: "id",

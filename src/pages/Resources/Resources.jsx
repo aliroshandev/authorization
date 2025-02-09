@@ -120,11 +120,11 @@ const Resources = (props) => {
       </div>
       <div className="resource-autocomplete-inputs">
         <Form.Item label="سامانه">
-          {clientsStatus === "pending" ? (
+          {clientsStatus === "loading" ? (
             <Spin />
-          ) : clientsStatus === "rejected" ? (
+          ) : clientsStatus === "error" ? (
             <ErrorSection handleRefresh={clientsRefetch} />
-          ) : clientsStatus === "resolved" && clients?.data ? (
+          ) : clientsStatus === "success" && clients?.data ? (
             <AutoComplete
               onSelect={(value, item) => {
                 setSelectedClientId(item.key);
@@ -155,11 +155,11 @@ const Resources = (props) => {
           )}
         </Form.Item>
         <Form.Item label="منو">
-          {menusStatus === "pending" ? (
+          {menusStatus === "loading" ? (
             <Spin />
-          ) : menusStatus === "rejected" ? (
+          ) : menusStatus === "error" ? (
             <ErrorSection handleRefresh={menusRefetch} />
-          ) : menusStatus === "resolved" && selectedClientId ? (
+          ) : menusStatus === "success" && selectedClientId ? (
             <AutoComplete
               onSelect={(value, item) => {
                 navigate({

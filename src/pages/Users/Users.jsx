@@ -64,7 +64,7 @@ const Users = () => {
     <>
       <Table
         dataSource={roleData?.data?.rows}
-        loading={status === "pending"}
+        loading={status === "loading"}
         columns={columns}
         rowKey="id"
       />

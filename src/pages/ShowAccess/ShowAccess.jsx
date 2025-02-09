@@ -20,7 +20,7 @@ const ShowAccess = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>سامانه:</h3>
-            {clientsStatus === "pending" ? (
+            {clientsStatus === "loading" ? (
               <Skeleton.Input active />
             ) : (
               <AutoComplete

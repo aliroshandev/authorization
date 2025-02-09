@@ -105,13 +105,14 @@ const ManageSystemMenu = () => {
   return (
     <div className="menu-section">
       <h3>سامانه:</h3>
-      {clientsStatus === "rejected" ? (
+      {clientsStatus}
+      {clientsStatus === "error" ? (
         <ErrorSection handleRefresh={clientsRefetch} />
-      ) : clientsStatus === "pending" ? (
+      ) : clientsStatus === "loading" ? (
         <div className="skeleton-section">
           <Skeleton.Input active className="skeleton" />
         </div>
-      ) : clientsStatus === "resolved" && clientsData ? (
+      ) : clientsStatus === "success" && clientsData ? (
         <div className="client-section">
           <AutoComplete
             onSelect={(value, item) => {
@@ -152,7 +153,7 @@ const ManageSystemMenu = () => {
           <Table
             columns={columns}
             dataSource={responseMenu?.data}
-            loading={status === "pending"}
+            loading={status === "loading"}
             rowKey={"id"}
           />
         </>

@@ -56,10 +56,10 @@ const ResourcesType = () => {
     <>
       <Table
         columns={COLUMNS}
-        loading={status === "pending"}
+        loading={status === "loading"}
         dataSource={response?.data?.rows}
       />
-      {status === "rejected" && <ErrorSection handleRefresh={refetchApi} />}
+      {status === "error" && <ErrorSection handleRefresh={refetchApi} />}
       <CrudBtn onNew={() => setSelectedResource("create")} />
     </>
   );

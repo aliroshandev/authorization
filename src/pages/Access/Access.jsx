@@ -118,9 +118,9 @@ const Access = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>سامانه:</h3>
-            {clientsStatus === "rejected" ? (
+            {clientsStatus === "error" ? (
               <ErrorSection handleRefresh={clientsRefetch} />
-            ) : clientsStatus === "pending" ? (
+            ) : clientsStatus === "loading" ? (
               <Skeleton.Input active />
             ) : (
               <AutoComplete
@@ -154,9 +154,9 @@ const Access = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>منو:</h3>
-            {menusStatus === "rejected" ? (
+            {menusStatus === "error" ? (
               <ErrorSection handleRefresh={menusRefetch} />
-            ) : menusStatus === "pending" ? (
+            ) : menusStatus === "loading" ? (
               <Skeleton.Input active />
             ) : (
               <AutoComplete
@@ -186,9 +186,9 @@ const Access = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>نقش:</h3>
-            {rolesStatus === "rejected" ? (
+            {rolesStatus === "error" ? (
               <ErrorSection handleRefresh={rolesRefetch} />
-            ) : rolesStatus === "pending" ? (
+            ) : rolesStatus === "loading" ? (
               <Skeleton.Input active />
             ) : (
               <AutoComplete
@@ -235,11 +235,11 @@ const Access = () => {
           </Button>
         </div>
       )}
-      {resourcesStatus === "rejected" ? (
+      {resourcesStatus === "error" ? (
         <ErrorSection handleRefresh={resourcesRefetch} />
-      ) : resourcesStatus === "pending" ? (
+      ) : resourcesStatus === "loading" ? (
         <Skeleton active />
-      ) : resourcesStatus === "resolved" && showAccessTable ? (
+      ) : resourcesStatus === "success" && showAccessTable ? (
         <>
           {permissions?.data?.rows?.length > 0 ? (
             <>

@@ -30,7 +30,7 @@ const Roles = () => {
     <>
       <Table
         dataSource={roleData?.data}
-        loading={status === "pending"}
+        loading={status === "loading"}
         columns={columns}
         rowKey="id"
       />
