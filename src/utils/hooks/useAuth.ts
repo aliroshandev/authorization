@@ -84,14 +84,14 @@ export function useAuth() {
    * @deprecated use alternative getRequest
    * @param queryKey
    */
-  function getApi({
+  async function getApi({
                     queryKey,
                   }: {
     queryKey: (string | number | boolean)[];
   }) {
     let request = queryKey.join("/");
     try {
-      const response = axiosInstance.get(request, {
+      const response = await axiosInstance.get(request, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
