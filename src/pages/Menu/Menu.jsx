@@ -1,18 +1,14 @@
-import { AutoComplete, Button, Skeleton, Table, Tooltip } from "antd";
-import { useState } from "react";
+import {AutoComplete, Button, Skeleton, Table, Tooltip} from "antd";
+import {useEffect, useState} from "react";
 import CrudBtn from "components/CrudBtn/CrudBtn";
 import CUMenu from "./CUMenu";
 import "./Menu.scss";
 import ErrorSection from "components/ErrorSection/ErrorSection";
-import {
-  AiOutlineOrderedList,
-  AiOutlineDelete,
-  AiFillEdit,
-} from "react-icons/ai";
-import { useNavigate, useParams } from "react-router";
-import { Link } from "react-router-dom";
-import { useQuery } from "react-query";
-import { useAuth } from "utils/hooks/useAuth";
+import {AiFillEdit, AiOutlineDelete, AiOutlineOrderedList,} from "react-icons/ai";
+import {useNavigate, useParams} from "react-router";
+import {Link} from "react-router-dom";
+import {useQuery} from "react-query";
+import {useAuth} from "utils/hooks/useAuth";
 
 const ManageSystemMenu = () => {
   const { id } = useParams();
@@ -34,6 +30,10 @@ const ManageSystemMenu = () => {
   } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });
+
+  useEffect(() => {
+    console.log(clientsData);
+  }, [clientsData])
 
   const columns = [
     {
@@ -105,14 +105,13 @@ const ManageSystemMenu = () => {
   return (
     <div className="menu-section">
       <h3>سامانه:</h3>
-      {clientsStatus}
       {clientsStatus === "error" ? (
         <ErrorSection handleRefresh={clientsRefetch} />
       ) : clientsStatus === "loading" ? (
         <div className="skeleton-section">
           <Skeleton.Input active className="skeleton" />
         </div>
-      ) : clientsStatus === "success" ? (
+      ) : clientsStatus === "success" && clientsData?.data ? (
         <div className="client-section">
           <AutoComplete
             onSelect={(value, item) => {
