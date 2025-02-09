@@ -1,13 +1,8 @@
 import React from "react";
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { TiLightbulb } from "react-icons/ti";
-import type { MenuProps } from "antd";
-import { Menu } from "antd";
-import { useNavigate } from "react-router-dom";
+import {TiLightbulb} from "react-icons/ti";
+import type {MenuProps} from "antd";
+import {Menu} from "antd";
+import {useNavigate} from "react-router-dom";
 
 type MenuItem = Required<MenuProps>["items"][number] & { link?: string };
 
@@ -33,64 +28,64 @@ type Props = {
   isRightMenuCollapsed: boolean;
 };
 
-const RightMenu: React.FC<Props> = ({ isRightMenuCollapsed }) => {
+const RightMenu: React.FC<Props> = ({isRightMenuCollapsed}) => {
   const navigate = useNavigate();
   const MENU_ITEMS: TMenuItems[] = [
     {
       label: "مدیریت",
       name: "managment",
       key: "managment",
-      icon: <TiLightbulb />,
+      icon: <TiLightbulb/>,
       children: [
         {
           label: "مدیریت منابع",
           link: "menu",
           key: "menu",
-          icon: <TiLightbulb />,
+          icon: <TiLightbulb/>,
           onClick: () => navigate("/menu"),
         },
         {
           label: "نوع منابع",
           link: "resources-type",
           key: "resources-type",
-          icon: <TiLightbulb />,
+          icon: <TiLightbulb/>,
           onClick: () => navigate("/menu"),
         },
         {
           label: "تخصیص نقش به مجوز",
           link: "access",
           key: "access",
-          icon: <TiLightbulb />,
+          icon: <TiLightbulb/>,
           onClick: () => navigate("/access"),
         },
         {
           label: "نمایش دسترسی ها",
           link: "show-access",
           key: "show-access",
-          icon: <TiLightbulb />,
+          icon: <TiLightbulb/>,
           onClick: () => navigate("/show-access"),
         },
         {
           label: "مدیریت نقش ها",
           link: "roles-management",
           key: "roles-management",
-          icon: <TiLightbulb />,
+          icon: <TiLightbulb/>,
           onClick: () => navigate("/roles-management"),
         },
         {
           label: "مجوز ها ",
           link: "permissions",
           key: "permissions",
-          icon: <TiLightbulb />,
+          icon: <TiLightbulb/>,
           onClick: () => navigate("/permissions"),
         },
-        {
-          label: "کاربران",
-          link: "users",
-          key: "users",
-          icon: <TiLightbulb />,
-          onClick: () => navigate("/users"),
-        },
+        // {
+        //   label: "کاربران",
+        //   link: "users",
+        //   key: "users",
+        //   icon: <TiLightbulb />,
+        //   onClick: () => navigate("/users"),
+        // },
       ],
     },
   ];
@@ -102,7 +97,7 @@ const RightMenu: React.FC<Props> = ({ isRightMenuCollapsed }) => {
       // theme="dark"
       inlineCollapsed={isRightMenuCollapsed}
       items={MENU_ITEMS}
-      style={{ maxWidth: "240px" }}
+      style={{maxWidth: "240px"}}
     />
   );
 };

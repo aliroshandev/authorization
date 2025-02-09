@@ -36,7 +36,7 @@ const AuthRoutes = () => {
         path="/roles-management/:id"
         element={<RolesManagement />}
       />
-      <Route key="/Users" path="users" element={<Users />} />
+      {/*<Route key="/Users" path="users" element={<Users />} />*/}
       <Route key="/Menu" path="/menu" element={<ManageSystemMenu />} />
       <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu />} />
       <Route

@@ -31,18 +31,18 @@ const Resources = (props) => {
     response: clients,
     status: clientsStatus,
     refetchApi: clientsRefetch,
-  } = useQuery("clients", getApi);
+  } = useQuery("/clients", getApi);
 
   const {
     response: menus,
     status: menusStatus,
     refetchApi: menusRefetch,
-  } = useQuery(`menus/client-id?clientId=${selectedClientId}`, getApi, {
+  } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });
 
   const { response, isFetching, refetchApi } = useQuery(
-    `resources/menu-id?menuId=${menuId}`,
+    `/resources/menu-id?menuId=${menuId}`,
     getApi,
     {
       enabled: !!menuId,

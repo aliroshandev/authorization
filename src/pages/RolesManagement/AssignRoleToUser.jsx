@@ -16,7 +16,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
     status: assignedUsersStatus,
     refetchApi: assignedUsersRefetch,
   } = useQuery(
-    `user/get-by-client-and-role?clientId=${clientId}&roleName=${selectedRole.name}`,
+    `/user/get-by-client-and-role?clientId=${clientId}&roleName=${selectedRole.name}`,
     getApi,
     {
       enabled: !!((selectedRole.clientId || clientId) && selectedRole.name),
@@ -27,7 +27,7 @@ const AssignRoleToUser = ({ onBack, selectedRole }) => {
     data: users,
     status: usersStatus,
     refetchApi: usersRefetch,
-  } = useQuery(`user?currentPage=1&pageSize=20`, getApi);
+  } = useQuery(`/user?currentPage=1&pageSize=20`, getApi);
 
   const { mutate } = useMutation({
     mutationFn: sendRequest,

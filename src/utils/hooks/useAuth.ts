@@ -1,5 +1,8 @@
 import axios from "axios";
 import useSessionStorageState from "./useSessionStorage";
+import {TServerCall} from '../types/authContext';
+import {convertArabicCharToPersian} from '../functions/convertArabicCharToPersian';
+import {notification} from 'antd';
 
 interface sendRequestType {
   method: string;
@@ -16,6 +19,8 @@ interface sendRequestType {
 export const axiosInstance = axios.create({
   baseURL: "https://auth.betaja.ir/auth-api/",
 });
+
+let localToken = "";
 
 export function useAuth() {
   const [token,] = useSessionStorageState("token");
@@ -37,6 +42,48 @@ export function useAuth() {
     }
   );
 
+  const serverCall = async ({ entity, method, data = { test: 1 } }: TServerCall) => {
+    try {
+      let requestOptions = {
+        url: convertArabicCharToPersian(entity),
+        method,
+        headers: {
+          Authorization: "Bearer " + (localToken || token)
+        },
+        redirect: "follow",
+        ...(data && { data: convertArabicCharToPersian(JSON.stringify(data)) })
+      };
+      let response = await axiosInstance({ ...requestOptions });
+      if (response.status === 200) {
+        return response.data;
+      } else if (response.status === 204) {
+        return { data: { rows: [] } };
+      } else {
+        // setNotification(response.status, `خطا در انجام عملیات - ${response?.statusText}`, "error");
+        // setNotification(response.status, "", "error");
+        notification.error({
+          message: `خطا در انجام عملیات - ${response?.statusText}`,
+          placement: "bottomLeft"
+        });
+        throw new Error(`خطا در انجام عملیات - ${response?.statusText}`);
+      }
+    } catch (e: any) {
+      if (e.response) {
+        // setNotification(e.response.status, e.message ?? `خطا در انجام عملیات`, "error");
+        // setNotification(e.response.status, "", "error");
+        notification.error({
+          message: e.message ?? `خطا در انجام عملیات`,
+          placement: "bottomLeft"
+        });
+      }
+      throw new Error(JSON.stringify(e) || `خطا در انجام عملیات`);
+    }
+  };
+
+  /**
+   * @deprecated use alternative getRequest
+   * @param queryKey
+   */
   async function getApi({
                           queryKey,
                         }: {
@@ -54,6 +101,23 @@ export function useAuth() {
       throw new Error();
     }
   }
+
+  const getRequest = async ({
+                              queryKey
+                            }: {
+    queryKey: string | number | boolean | Array<number | boolean | string>;
+  }) => {
+    let tempEntity = queryKey;
+    if (Array.isArray(queryKey)) {
+      tempEntity = queryKey.join("/");
+    }
+    tempEntity = String(tempEntity);
+    try {
+      return await serverCall({ entity: tempEntity, method: "get" });
+    } catch (error: any) {
+      throw new Error(error?.message || `خطا در انجام عملیات`);
+    }
+  };
 
   async function sendRequest({
                                method,
@@ -73,5 +137,6 @@ export function useAuth() {
     });
   }
 
-  return {getApi, sendRequest};
+  return {
+    serverCall, getRequest, getApi, sendRequest};
 }

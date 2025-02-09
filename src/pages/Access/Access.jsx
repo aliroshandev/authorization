@@ -23,13 +23,13 @@ const Access = () => {
     response: clients,
     status: clientsStatus,
     refetchApi: clientsRefetch,
-  } = useQuery("clients", getApi);
+  } = useQuery("/clients", getApi);
 
   const {
     response: menus,
     status: menusStatus,
     refetchApi: menusRefetch,
-  } = useQuery(`menus/client-id?clientId=${selectedClientId}`, getApi, {
+  } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });
 
@@ -37,7 +37,7 @@ const Access = () => {
     response: resources,
     status: resourcesStatus,
     refetchApi: resourcesRefetch,
-  } = useQuery(`resources/menu-id?menuId=${selectedMenuId}`, getApi, {
+  } = useQuery(`/resources/menu-id?menuId=${selectedMenuId}`, getApi, {
     enabled: !!selectedMenuId,
   });
 
@@ -45,10 +45,10 @@ const Access = () => {
     response: roles,
     status: rolesStatus,
     refetchApi: rolesRefetch,
-  } = useQuery("roles?pageSize=100&currentPage=1", getApi);
+  } = useQuery("/roles?pageSize=100&currentPage=1", getApi);
 
   const { response: permissions } = useQuery(
-    "permissions?pageSize=100&currentPage=1",
+    "/permissions?pageSize=100&currentPage=1",
     getApi
   );
 

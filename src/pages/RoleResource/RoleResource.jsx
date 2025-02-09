@@ -12,26 +12,26 @@ const RoleResource = () => {
   const [resourceId, setResourceId] = useState();
   const [roleId, setRoleId] = useState();
 
-  const { response: clients } = useQuery("clients", getApi, {
+  const { response: clients } = useQuery("/clients", getApi, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
   const { response: menus } = useQuery(
-    `menus/client-id?clientId=${selectedClientId}`,
+    `/menus/client-id?clientId=${selectedClientId}`,
     getApi,
     {
       enabled: !!selectedClientId,
     }
   );
   const { response: resources } = useQuery(
-    `resources/menu-id?menuId=${selectedMenuId}`,
+    `/resources/menu-id?menuId=${selectedMenuId}`,
     getApi,
     {
       enabled: !!selectedMenuId,
     }
   );
 
-  const { response: roles } = useQuery("roles", getApi, {
+  const { response: roles } = useQuery("/roles", getApi, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });

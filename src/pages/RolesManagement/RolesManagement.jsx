@@ -50,14 +50,14 @@ const RolesManagement = (props) => {
     data: clients,
     status: clientsStatus,
     refetchApi: clientsRefetch,
-  } = useQuery("clients", getApi);
+  } = useQuery("/clients", getApi);
 
   const {
     data: roles,
     status: rolesStatus,
     refetch: rolesRefetch,
   } = useQuery(
-    `roles/client-id?clientId=${selectedClientId}&currentPage=1&pageSize=100`,
+    `/roles/client-id?clientId=${selectedClientId}&currentPage=1&pageSize=100`,
     getApi,
     {
       enabled: !!selectedClientId,
