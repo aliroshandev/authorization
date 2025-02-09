@@ -170,7 +170,7 @@ const ManageSystemMenu = () => {
           <AutoComplete
             onSelect={(value, item) => {
               setSelectedClientId(item.key);
-              navigate(`/management/menu/${item.key}`);
+              navigate(`/menu/${item.key}`);
             }}
             filterOption={(inputValue, option) =>
               option.children.includes(inputValue)
