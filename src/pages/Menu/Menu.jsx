@@ -49,7 +49,7 @@ const ManageSystemMenu = () => {
     data: responseMenu,
     status,
     refetch: responseMenuRefetch,
-  } = useQuery(`/menus/id/${selectedClientId}`, getApi, {
+  } = useQuery(`/menus/client-id/${selectedClientId}`, getApi, {
     enabled: !!selectedClientId,
   });
 

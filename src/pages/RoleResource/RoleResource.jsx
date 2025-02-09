@@ -17,7 +17,7 @@ const RoleResource = () => {
     cacheTime: Infinity,
   });
   const { data: menus } = useQuery(
-    `/menus/id/${selectedClientId}`,
+    `/menus/client-id/${selectedClientId}`,
     getApi,
     {
       enabled: !!selectedClientId,
