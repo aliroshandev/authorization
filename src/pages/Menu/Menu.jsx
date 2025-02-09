@@ -23,7 +23,7 @@ const ManageSystemMenu = () => {
     refetchApi: clientsRefetch,
   } = useQuery({
     queryKey: "/clients",
-    queryFn: async () => await getApi({queryKey})
+    queryFn: getApi,
   });
 
   const {
