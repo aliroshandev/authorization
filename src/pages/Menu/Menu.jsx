@@ -112,7 +112,7 @@ const ManageSystemMenu = () => {
         <div className="skeleton-section">
           <Skeleton.Input active className="skeleton" />
         </div>
-      ) : clientsStatus === "success" && clientsData ? (
+      ) : clientsStatus === "success" ? (
         <div className="client-section">
           <AutoComplete
             onSelect={(value, item) => {
