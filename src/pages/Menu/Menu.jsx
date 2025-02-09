@@ -21,9 +21,13 @@ const ManageSystemMenu = () => {
     response: clientsData,
     status: clientsStatus,
     refetchApi: clientsRefetch,
-  } = useQuery({
-    queryKey: "/clients",
-    queryFn: getApi,
+  } = useQuery("/clients", getApi, {
+    onSuccess: (response) => {
+      console.log(response);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   const {
