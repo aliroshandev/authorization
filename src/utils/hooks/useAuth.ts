@@ -96,6 +96,7 @@ export function useAuth() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(data);
       return data;
     } catch (error) {
       throw new Error();
