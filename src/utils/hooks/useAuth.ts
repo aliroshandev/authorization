@@ -42,7 +42,7 @@ export function useAuth() {
     }
   );
 
-  const serverCall = async ({ entity, method, data = { test: 1 } }: TServerCall) => {
+  const serverCall = async ({entity, method, data = {test: 1}}: TServerCall) => {
     try {
       let requestOptions = {
         url: convertArabicCharToPersian(entity),
@@ -51,13 +51,13 @@ export function useAuth() {
           Authorization: "Bearer " + (localToken || token)
         },
         redirect: "follow",
-        ...(data && { data: convertArabicCharToPersian(JSON.stringify(data)) })
+        ...(data && {data: convertArabicCharToPersian(JSON.stringify(data))})
       };
-      let response = await axiosInstance({ ...requestOptions });
+      let response = await axiosInstance({...requestOptions});
       if (response.status === 200) {
         return response.data;
       } else if (response.status === 204) {
-        return { data: { rows: [] } };
+        return {data: {rows: []}};
       } else {
         // setNotification(response.status, `خطا در انجام عملیات - ${response?.statusText}`, "error");
         // setNotification(response.status, "", "error");
@@ -84,18 +84,20 @@ export function useAuth() {
    * @deprecated use alternative getRequest
    * @param queryKey
    */
-  async function getApi({
-                          queryKey,
-                        }: {
+  function getApi({
+                    queryKey,
+                  }: {
     queryKey: (string | number | boolean)[];
   }) {
     let request = queryKey.join("/");
     try {
-      return await axiosInstance.get(request, {
+      const response = axiosInstance.get(request, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response);
+      return response;
     } catch (error) {
       throw new Error();
     }
@@ -112,7 +114,7 @@ export function useAuth() {
     }
     tempEntity = String(tempEntity);
     try {
-      return await serverCall({ entity: tempEntity, method: "get" });
+      return await serverCall({entity: tempEntity, method: "get"});
     } catch (error: any) {
       throw new Error(error?.message || `خطا در انجام عملیات`);
     }
@@ -137,5 +139,6 @@ export function useAuth() {
   }
 
   return {
-    serverCall, getRequest, getApi, sendRequest};
+    serverCall, getRequest, getApi, sendRequest
+  };
 }
