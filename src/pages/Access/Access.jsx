@@ -20,13 +20,13 @@ const Access = () => {
   const tableHeader = useRef();
 
   const {
-    response: clients,
+    data: clients,
     status: clientsStatus,
     refetchApi: clientsRefetch,
   } = useQuery("/clients", getApi);
 
   const {
-    response: menus,
+    data: menus,
     status: menusStatus,
     refetchApi: menusRefetch,
   } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
@@ -34,7 +34,7 @@ const Access = () => {
   });
 
   const {
-    response: resources,
+    data: resources,
     status: resourcesStatus,
     refetchApi: resourcesRefetch,
   } = useQuery(`/resources/menu-id?menuId=${selectedMenuId}`, getApi, {
@@ -42,12 +42,12 @@ const Access = () => {
   });
 
   const {
-    response: roles,
+    data: roles,
     status: rolesStatus,
     refetchApi: rolesRefetch,
   } = useQuery("/roles?pageSize=100&currentPage=1", getApi);
 
-  const { response: permissions } = useQuery(
+  const { data: permissions } = useQuery(
     "/permissions?pageSize=100&currentPage=1",
     getApi
   );

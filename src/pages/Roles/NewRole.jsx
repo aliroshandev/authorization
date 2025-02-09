@@ -9,10 +9,10 @@ function NewRole({ setIsAddPushed }) {
   const [roleId, setRoleId] = useState();
   const [resourceId, setResourceId] = useState();
 
-  const { response: resources } = useGetApiCall({
+  const { data: resources } = useGetApiCall({
     endpoint: "resources?pageSize=100&currentPage=1",
   });
-  const { response: role } = useGetApiCall({
+  const { data: role } = useGetApiCall({
     endpoint: "roles?pageSize=100&currentPage=1",
   });
 

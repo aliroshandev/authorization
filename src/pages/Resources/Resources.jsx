@@ -28,13 +28,13 @@ const Resources = (props) => {
   const { id: menuId } = useParams();
   const [selectedClientId, setSelectedClientId] = useState(clientId);
   const {
-    response: clients,
+    data: clients,
     status: clientsStatus,
     refetchApi: clientsRefetch,
   } = useQuery("/clients", getApi);
 
   const {
-    response: menus,
+    data: menus,
     status: menusStatus,
     refetchApi: menusRefetch,
   } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {

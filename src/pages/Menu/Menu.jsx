@@ -18,7 +18,7 @@ const ManageSystemMenu = () => {
 
   const navigate = useNavigate();
   const {
-    response: clientsData,
+    data: clientsData,
     status: clientsStatus,
     refetchApi: clientsRefetch,
   } = useQuery("/clients", getApi, {
@@ -31,7 +31,7 @@ const ManageSystemMenu = () => {
   });
 
   const {
-    response: responseMenu,
+    data: responseMenu,
     status,
     refetchApi: responseMenuRefetch,
   } = useQuery(`/menus/client-id?clientId=${selectedClientId}`, getApi, {
@@ -39,9 +39,8 @@ const ManageSystemMenu = () => {
   });
 
   useEffect(() => {
-    console.log(clientsData);
-    console.log(clientsStatus);
-  }, [clientsData, clientsStatus])
+    console.log(clientsData?.data);
+  }, [clientsData?.data, clientsStatus])
 
   const columns = [
     {

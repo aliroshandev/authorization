@@ -4,7 +4,7 @@ import { useAuth } from "utils/hooks/useAuth";
 
 const Roles = () => {
   const { getApi } = useAuth();
-  const { response: roleData, status } = useQuery(
+  const { data: roleData, status } = useQuery(
     "roles?pageSize=100&currentPage=1",
     getApi
   );

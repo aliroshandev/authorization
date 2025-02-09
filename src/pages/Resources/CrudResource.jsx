@@ -25,12 +25,12 @@ const CrudResource = ({
     },
   });
 
-  const { response: menu } = useQuery(`/menus/id/${menuId}`, getApi);
-  const { response: resources, status: resourceStatus } = useQuery(
+  const { data: menu } = useQuery(`/menus/id/${menuId}`, getApi);
+  const { data: resources, status: resourceStatus } = useQuery(
     "/resources?currentPage=1&pageSize=20",
     getApi
   );
-  const { response: resourceType, status: resourceTypeStatus } = useQuery(
+  const { data: resourceType, status: resourceTypeStatus } = useQuery(
     "/resource-types?pageSize=20&currentPage=1",
     getApi
   );
