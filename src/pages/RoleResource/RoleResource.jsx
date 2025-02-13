@@ -59,7 +59,7 @@ const RoleResource = () => {
         data: clients?.data || [],
         autoCompleteValue: "id",
         autoCompleteTitle: "client",
-        handleChange(...rest) {
+        onChange: (...rest) => {
           setSelectedClientId(rest[1]?.key);
         },
         size: 12,
@@ -71,7 +71,7 @@ const RoleResource = () => {
         data: menus?.data || [],
         autoCompleteValue: "id",
         autoCompleteTitle: "title",
-        handleChange(...rest) {
+        onChange: (...rest) => {
           setSelectedMenuId(rest[1]?.key);
         },
         isDisabled: !!selectedClientId ? false : true,
@@ -84,7 +84,7 @@ const RoleResource = () => {
         data: resources?.data || [],
         autoCompleteValue: "id",
         autoCompleteTitle: "title",
-        handleChange(...rest) {
+        onChange: (...rest) => {
           setResourceId(rest[1]?.key);
         },
         isDisabled: !!selectedMenuId ? false : true,
@@ -97,7 +97,7 @@ const RoleResource = () => {
         data: roles?.data || [],
         autoCompleteValue: "id",
         autoCompleteTitle: "name",
-        handleChange(...rest) {
+        onChange: (...rest) => {
           setRoleId(rest[1]?.key);
         },
         size: 12,

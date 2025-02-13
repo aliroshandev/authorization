@@ -64,7 +64,7 @@ const CrudResource = ({
         autoCompleteValue: "id",
         autoCompleteTitle: "title",
         size: 12,
-        handleChange(...rest) {
+        onChange: (...rest) => {
           setParentId(rest[1]?.key);
         },
         defaultValue: selectedResource?.parentName,

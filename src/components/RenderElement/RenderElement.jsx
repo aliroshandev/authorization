@@ -1,48 +1,40 @@
 import React from "react";
-import {
-  Select,
-  Form,
-  Input,
-  Skeleton,
-  InputNumber,
-  Checkbox,
-  Radio,
-} from "antd";
-import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
+import {Checkbox, Form, Input, InputNumber, Radio, Select, Skeleton,} from "antd";
+import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons";
 import ReactSelect from "react-select";
 
 //Elements Type => text, dropdown, date, autocomplete
 const RenderElement = ({
-  type,
-  label,
-  name,
-  rules,
-  placeholder,
-  searchForm,
-  id = "year",
-  options = [{ value: null, title: "خالی" }],
-  checkOptions = [{ value: "خالی", label: "خالی" }],
-  defaultValue,
-  initialValues,
-  data,
-  divideBy,
-  autoCompleteValue,
-  autoCompleteTitle,
-  autoCompleteJsonValue,
-  callBack,
-  value,
-  disabled = false,
-  rows = 5,
-  mode,
-  onChange,
-  directOnChange,
-  onDateChange,
-  dateFormat = "YYYY/MM/DD",
-  picker = "day",
-  mapHandler,
-  className = "",
-}) => {
-  const { Option } = Select;
+                         type,
+                         label,
+                         name,
+                         rules,
+                         placeholder,
+                         searchForm,
+                         id = "year",
+                         options = [{value: null, title: "خالی"}],
+                         checkOptions = [{value: "خالی", label: "خالی"}],
+                         defaultValue,
+                         initialValues,
+                         data,
+                         divideBy,
+                         autoCompleteValue,
+                         autoCompleteTitle,
+                         autoCompleteJsonValue,
+                         callBack,
+                         value,
+                         disabled = false,
+                         rows = 5,
+                         mode,
+                         onChange,
+                         directOnChange,
+                         onDateChange,
+                         dateFormat = "YYYY/MM/DD",
+                         picker = "day",
+                         mapHandler,
+                         className = "",
+                       }) => {
+  const {Option} = Select;
   const ELEMENT_TYPE = type.toLowerCase();
 
   const onKeyPress = (e) => {
@@ -72,7 +64,7 @@ const RenderElement = ({
       <Form.Item label={label} name={name} rules={rules}>
         <Input.Password
           iconRender={(visible) =>
-            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>
           }
         />
       </Form.Item>
@@ -80,7 +72,7 @@ const RenderElement = ({
   } else if (ELEMENT_TYPE === "textarea") {
     return (
       <Form.Item label={label} name={name} rules={rules}>
-        <Input.TextArea rows={rows} />
+        <Input.TextArea rows={rows}/>
       </Form.Item>
     );
   } else if (ELEMENT_TYPE === "button") {
@@ -106,12 +98,12 @@ const RenderElement = ({
                 value={
                   autoCompleteJsonValue
                     ? JSON.stringify({
-                        id: option[autoCompleteJsonValue[0]],
-                        name: option[autoCompleteJsonValue[1]],
-                      })
+                      id: option[autoCompleteJsonValue[0]],
+                      name: option[autoCompleteJsonValue[1]],
+                    })
                     : option[autoCompleteValue]
-                    ? option[autoCompleteValue]
-                    : option.value
+                      ? option[autoCompleteValue]
+                      : option.value
                 }
                 key={
                   option[autoCompleteValue]

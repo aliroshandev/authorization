@@ -6,11 +6,9 @@ import {FormButtons} from "../Buttons/Buttons";
 import "./CUMenu.scss";
 import {useAuth} from "utils/hooks/useAuth";
 import {useMutation, useQuery} from "react-query";
-import {useParams} from "react-router";
 
 const CUMenu = ({onBack, clientId, selectedMenu}) => {
   const {getApi, sendRequest} = useAuth();
-  const {id} = useParams();
   const isCreate = !selectedMenu;
   const [menuForm] = Form.useForm();
   const [parentId, setParentId] = useState();
@@ -66,17 +64,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
         name: "key",
         type: "text",
       },
-      {
-        label: "سامانه",
-        name: "clientId",
-        type: "text",
-        isDisabled: true,
-        initialValues: clientId ?? id,
-        placeholder:
-          responseClient?.data?.find((client) => client.id === clientId || client.id === id)
-            ?.description || "عمومی",
-      },
-      ...((clientId || id) && menus?.data?.length > 0
+      ...((clientId) && menus?.data?.length > 0
         ? [
           {
             label: "منوی پدر",
@@ -85,7 +73,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
             data: menus?.data,
             autoCompleteValue: "id",
             autoCompleteTitle: "title",
-            handleChange(...rest) {
+            onChange: (...rest) => {
               console.log(rest);
               setParentId(rest[1]?.key);
             },

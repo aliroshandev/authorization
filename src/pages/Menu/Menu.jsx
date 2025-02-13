@@ -157,7 +157,6 @@ const ManageSystemMenu = () => {
         <div className="client-section">
           <AutoComplete
             onSelect={(value, item) => {
-              console.log(item);
               setSelectedClientId(item.key);
               navigate(`/menu/${item.key}`);
             }}
