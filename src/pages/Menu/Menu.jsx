@@ -60,7 +60,7 @@ const ManageSystemMenu = () => {
   const handleDelete = (value) => {
     mutate({
         method: "DELETE",
-        endpoint: `api/menus/${value.id}`,
+        endpoint: `menus/${value.id}`,
       },
       {
         onSuccess: () => {
