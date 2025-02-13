@@ -73,8 +73,8 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
             data: menus?.data,
             autoCompleteValue: "id",
             autoCompleteTitle: "title",
-            onChange: (...rest) => {
-              setParentId(rest[0]?.value);
+            handleChange(...rest) {
+              setParentId(rest[1]?.key);
             },
             placeholder:
               menus?.data?.find((client) => client.id === selectedMenu?.id)

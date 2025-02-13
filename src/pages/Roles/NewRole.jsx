@@ -24,8 +24,8 @@ function NewRole({ setIsAddPushed }) {
       data: role?.data || [],
       autoCompleteValue: "id",
       autoCompleteTitle: "name",
-      onChange: (...rest) => {
-        setRoleId(rest[0]?.value);
+      handleChange(...rest) {
+        setRoleId(rest[1]?.key);
       },
     },
     {
@@ -35,8 +35,8 @@ function NewRole({ setIsAddPushed }) {
       data: resources?.data?.rows || [],
       autoCompleteValue: "id",
       autoCompleteTitle: "title",
-      onChange: (...rest) => {
-        setResourceId(rest[0]?.value);
+      handleChange(...rest) {
+        setResourceId(rest[1]?.key);
       },
     },
   ];

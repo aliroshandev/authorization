@@ -1,5 +1,5 @@
-import React from "react";
-import {Checkbox, Form, Input, InputNumber, Radio, Select, Skeleton,} from "antd";
+import React, {useState} from "react";
+import {AutoComplete, Checkbox, Form, Input, InputNumber, Radio, Select, Skeleton,} from "antd";
 import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons";
 import ReactSelect from "react-select";
 
@@ -33,9 +33,13 @@ const RenderElement = ({
                          picker = "day",
                          mapHandler,
                          className = "",
+                         style,
+                         isDisabled = false,
+                         handleChange,
                        }) => {
   const {Option} = Select;
   const ELEMENT_TYPE = type.toLowerCase();
+  const [selectedAutocomplete, setSelectedAutocomplete] = useState({});
 
   const onKeyPress = (e) => {
     const specialCharRegex = new RegExp("[^0-9.0-9]");
@@ -124,16 +128,33 @@ const RenderElement = ({
     return (
       <>
         {data && data.length > 0 && JSON.stringify(data) ? (
-          <>
-            <ReactSelect
-              onChange={onChange}
-              options={data?.map((item) => ({
-                label: item[autoCompleteTitle],
-                value: item[autoCompleteValue],
-              }))}
-              isDisabled={disabled}
-            />
-          </>
+          <Form.Item label={label} name={name}>
+            <AutoComplete
+              onSelect={(value, item) => {
+                searchForm.setFieldsValue({ [name]: item.children });
+                setSelectedAutocomplete(item);
+                handleChange && handleChange(value, item);
+              }}
+              filterOption={(inputValue, option) =>
+                option.children.includes(inputValue)
+              }
+              placeholder={placeholder}
+              style={{ width: "100%" }}
+              value={selectedAutocomplete.children}
+              {...rest}
+            >
+              {data.map((item) => {
+                return (
+                  <AutoComplete.Option
+                    key={item[autoCompleteValue]}
+                    value={item[autoCompleteTitle]}
+                  >
+                    {`${item[autoCompleteTitle]}`}
+                  </AutoComplete.Option>
+                );
+              })}
+            </AutoComplete>
+          </Form.Item>
         ) : (
           <Skeleton.Button
             active={true}
