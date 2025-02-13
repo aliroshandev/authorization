@@ -59,9 +59,9 @@ const Resources = (props) => {
         key: "title",
       },
       {
-        title: "مسیر",
-        dataIndex: "path",
-        key: "path",
+        title: "کلید",
+        dataIndex: "key",
+        key: "key",
       },
       {
         title: "عملیات",

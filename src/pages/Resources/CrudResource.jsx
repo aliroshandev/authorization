@@ -41,11 +41,11 @@ const CrudResource = ({
         defaultValue: selectedResource?.title,
       },
       {
-        name: "path",
-        label: "مسیر",
+        name: "key",
+        label: "کلید",
         type: "text",
         size: 12,
-        defaultValue: selectedResource?.path,
+        defaultValue: selectedResource?.key,
       },
       {
         name: "parentId",
@@ -77,7 +77,7 @@ const CrudResource = ({
     ],
     [
       selectedResource?.title,
-      selectedResource?.path,
+      selectedResource?.key,
       selectedResource?.parentName,
       selectedResource?.menuName,
       resourceStatus,
