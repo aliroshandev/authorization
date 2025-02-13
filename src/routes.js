@@ -1,6 +1,5 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
-import Manager from "./pages/Manager/Manager";
 import Resources from "./pages/Resources/Resources";
 import Permissions from "./pages/Permissions/Permissions";
 import Roles from "./pages/Roles/Roles";
@@ -14,30 +13,30 @@ import Dashboard from "pages/Dashboard";
 const AuthRoutes = () => {
   return (
     <Routes>
-      <Route key="/Resources" path="/resources/:id" element={<Resources />} />
-      <Route key="/Permissions" path="/permissions" element={<Permissions />} />
-      <Route key="/Roles" path="/roles" element={<Roles />} />
+      <Route key="/Resources" path="/resources/:id" element={<Resources/>}/>
+      <Route key="/Permissions" path="/permissions" element={<Permissions/>}/>
+      <Route key="/Roles" path="/roles" element={<Roles/>}/>
       <Route
         key="/Roles-management"
         path="/roles-management"
-        element={<RolesManagement />}
+        element={<RolesManagement/>}
       />
       <Route
         key="/Roles-management"
         path="/roles-management/:id"
-        element={<RolesManagement />}
+        element={<RolesManagement/>}
       />
       {/*<Route key="/Users" path="users" element={<Users />} />*/}
-      <Route key="/Menu" path="/menu" element={<ManageSystemMenu />} />
-      <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu />} />
+      <Route key="/Menu" path="/menu" element={<ManageSystemMenu/>}/>
+      <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu/>}/>
       <Route
         key="/RoleResource"
         path="/role-resource"
-        element={<RoleResource />}
+        element={<RoleResource/>}
       />
-      <Route key="/Access" path="/access" element={<Access />} />
-      <Route key="/showAccess" path="/show-access" element={<ShowAccess />} />
-      <Route key="/dashboard" path="/" element={<Dashboard />} />
+      <Route key="/Access" path="/access" element={<Access/>}/>
+      <Route key="/showAccess" path="/show-access" element={<ShowAccess/>}/>
+      <Route key="/dashboard" path="/" element={<Dashboard/>}/>
     </Routes>
   );
 };

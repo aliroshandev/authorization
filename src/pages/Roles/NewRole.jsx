@@ -25,7 +25,7 @@ function NewRole({ setIsAddPushed }) {
       autoCompleteValue: "id",
       autoCompleteTitle: "name",
       onChange: (...rest) => {
-        setRoleId(rest[1]?.key);
+        setRoleId(rest[0]?.value);
       },
     },
     {
@@ -36,7 +36,7 @@ function NewRole({ setIsAddPushed }) {
       autoCompleteValue: "id",
       autoCompleteTitle: "title",
       onChange: (...rest) => {
-        setResourceId(rest[1]?.key);
+        setResourceId(rest[0]?.value);
       },
     },
   ];
