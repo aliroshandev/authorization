@@ -163,10 +163,7 @@ const Resources = (props) => {
             <AutoComplete
               onSelect={(value, item) => {
                 navigate({
-                  pathname: `/resources/${item.key}`,
-                  state: {
-                    clientId: selectedClientId,
-                  },
+                  pathname: `/resources/${item.key}?clientId=${selectedClientId}`,
                 });
               }}
               filterOption={(inputValue, option) =>
