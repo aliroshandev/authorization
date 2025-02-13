@@ -14,8 +14,6 @@ import Dashboard from "pages/Dashboard";
 const AuthRoutes = () => {
   return (
     <Routes>
-      <Route key="/Manager" path="/manager" element={<Manager />} />
-
       <Route key="/Resources" path="/resources/:id" element={<Resources />} />
       <Route key="/Permissions" path="/permissions" element={<Permissions />} />
       <Route key="/Roles" path="/roles" element={<Roles />} />

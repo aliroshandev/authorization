@@ -5,8 +5,8 @@ import CUMenu from "./CUMenu";
 import "./Menu.scss";
 import ErrorSection from "components/ErrorSection/ErrorSection";
 import {AiFillEdit, AiOutlineDelete, AiOutlineOrderedList,} from "react-icons/ai";
-import {useNavigate, useParams} from "react-router";
-import {Link} from "react-router-dom";
+import {useParams} from "react-router";
+import {Link, useNavigate} from "react-router-dom";
 import {useMutation, useQuery} from "react-query";
 import {useAuth} from "utils/hooks/useAuth";
 
@@ -157,6 +157,7 @@ const ManageSystemMenu = () => {
         <div className="client-section">
           <AutoComplete
             onSelect={(value, item) => {
+              console.log(item);
               setSelectedClientId(item.key);
               navigate(`/menu/${item.key}`);
             }}
