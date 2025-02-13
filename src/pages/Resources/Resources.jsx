@@ -1,17 +1,16 @@
 import CrudBtn from "components/CrudBtn/CrudBtn";
-import React, { useMemo } from "react";
+import React, {useMemo, useState} from "react";
 // import { useGetApiCall } from "base/hooks/useGetApiCall";
-import { AutoComplete, Button, Form, Spin, Table, Tooltip } from "antd";
-import { useState } from "react";
+import {AutoComplete, Button, Form, Spin, Table, Tooltip} from "antd";
 import "./Resources.scss";
 import CrudResource from "./CrudResource";
-import { useNavigate, useParams, useSearchParams } from "react-router";
-import {Link} from "react-router-dom";
-import { BackBtn } from "../Buttons/Buttons";
+import {useNavigate, useParams} from "react-router";
+import {Link, useSearchParams} from "react-router-dom";
+import {BackBtn} from "../Buttons/Buttons";
 import ErrorSection from "components/ErrorSection/ErrorSection";
-import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
-import { useAuth } from "utils/hooks/useAuth";
-import { useQuery } from "react-query";
+import {AiFillEdit, AiOutlineDelete} from "react-icons/ai";
+import {useAuth} from "utils/hooks/useAuth";
+import {useQuery} from "react-query";
 
 // const {createRoot} = ReactDOM;
 // const {Button, Table } = antd;
@@ -19,13 +18,13 @@ import { useQuery } from "react-query";
 
 const Resources = (props) => {
   const navigate = useNavigate();
-  const { getApi } = useAuth();
-  const { clientId } = useSearchParams();
+  const {getApi} = useAuth();
+  const {clientId} = useSearchParams();
   if (!clientId) {
     navigate("/menu");
   }
 
-  const { id: menuId } = useParams();
+  const {id: menuId} = useParams();
   const [selectedClientId, setSelectedClientId] = useState(menuId);
   const {
     data: clients,
@@ -41,7 +40,7 @@ const Resources = (props) => {
     enabled: !!selectedClientId,
   });
 
-  const { response, isFetching, refetch } = useQuery(
+  const {response, isFetching, refetch} = useQuery(
     `/resources/menu-id/${menuId}`,
     getApi,
     {
@@ -76,7 +75,7 @@ const Resources = (props) => {
           <>
             <Tooltip title="ویرایش">
               <Button type="link" danger>
-                <AiOutlineDelete className="icon" />
+                <AiOutlineDelete className="icon"/>
               </Button>
             </Tooltip>
             <Tooltip title="ویرایش">
@@ -85,7 +84,7 @@ const Resources = (props) => {
                 danger
                 onClick={() => setSelectedResource(value)}
               >
-                <AiFillEdit className="icon" />
+                <AiFillEdit className="icon"/>
               </Button>
             </Tooltip>
           </>
@@ -115,15 +114,15 @@ const Resources = (props) => {
       <div className="header-section">
         <h2>منابع</h2>
         <Link to={`/menu/${selectedClientId}`}>
-          <BackBtn />
+          <BackBtn/>
         </Link>
       </div>
       <div className="resource-autocomplete-inputs">
         <Form.Item label="سامانه">
           {clientsStatus === "loading" ? (
-            <Spin />
+            <Spin/>
           ) : clientsStatus === "error" ? (
-            <ErrorSection handleRefresh={clientsRefetch} />
+            <ErrorSection handleRefresh={clientsRefetch}/>
           ) : clientsStatus === "success" && clients?.data ? (
             <AutoComplete
               onSelect={(value, item) => {
@@ -156,9 +155,9 @@ const Resources = (props) => {
         </Form.Item>
         <Form.Item label="منو">
           {menusStatus === "loading" ? (
-            <Spin />
+            <Spin/>
           ) : menusStatus === "error" ? (
-            <ErrorSection handleRefresh={menusRefetch} />
+            <ErrorSection handleRefresh={menusRefetch}/>
           ) : menusStatus === "success" && selectedClientId ? (
             <AutoComplete
               onSelect={(value, item) => {
@@ -191,7 +190,7 @@ const Resources = (props) => {
         columns={columns}
         dataSource={response?.data}
       />
-      <CrudBtn onNew={() => setSelectedResource("create")} />
+      <CrudBtn onNew={() => setSelectedResource("create")}/>
     </>
   );
 };
