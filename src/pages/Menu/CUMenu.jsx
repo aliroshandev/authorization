@@ -67,10 +67,10 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
       {
         label: "سامانه",
         name: "clientId",
-        type: "autocomplete",
+        type: "text",
         isDisabled: true,
         placeholder:
-          responseClient?.data?.find((client) => client.id === clientId)
+          responseClient?.data?.find((client) => `${client.id}` === clientId)
             ?.description || "عمومی",
       },
       ...(clientId && menus?.data?.length > 0
