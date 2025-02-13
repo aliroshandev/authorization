@@ -25,7 +25,7 @@ const Permissions = () => {
   const handleDelete = (value) => {
     mutate({
         method: "DELETE",
-        endpoint: `permissions/${value.id}`,
+        endpoint: `/permissions/${value.id}`,
       },
       {
         onSuccess: () => {

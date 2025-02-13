@@ -1,0 +1,10 @@
+.section-search-buttons {
+  .ant-form-item-control-input-content {
+    display: flex;
+    justify-content: space-evenly !important;
+    flex-direction: row !important;
+  }
+  button {
+    width: 60px;
+  }
+}

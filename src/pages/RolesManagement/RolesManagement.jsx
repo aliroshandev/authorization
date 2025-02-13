@@ -1,48 +1,22 @@
-import React, { useEffect } from "react";
-import {
-  AutoComplete,
-  Button,
-  Form,
-  Table,
-  Tooltip,
-  Popconfirm,
-  notification,
-  Skeleton,
-} from "antd";
-import { useMemo, useState } from "react";
+import React, {useMemo, useState} from "react";
+import {AutoComplete, Button, Form, notification, Popconfirm, Skeleton, Table, Tooltip,} from "antd";
 import ErrorSection from "components/ErrorSection/ErrorSection";
-import { useNavigate, useParams } from "react-router";
+import {useNavigate, useParams} from "react-router";
 import RoleCrud from "./RoleCrud";
-import {
-  AiFillEdit,
-  AiOutlineDelete,
-  AiOutlineUsergroupAdd,
-} from "react-icons/ai";
+import {AiFillEdit, AiOutlineDelete, AiOutlineUsergroupAdd,} from "react-icons/ai";
 import "./RolesManagement.scss";
 import AssignRoleToUser from "./AssignRoleToUser";
 import CrudBtn from "components/CrudBtn/CrudBtn";
-import { useAuth } from "utils/hooks/useAuth";
-import { useMutation, useQuery } from "react-query";
+import {useAuth} from "utils/hooks/useAuth";
+import {useMutation, useQuery} from "react-query";
 
 const RolesManagement = (props) => {
   const navigate = useNavigate();
-  const { sendRequest, getApi } = useAuth();
-  const { isLoading, mutate } = useMutation({
+  const {sendRequest, getApi} = useAuth();
+  const {isLoading, mutate} = useMutation({
     mutationFn: sendRequest,
-    onSuccess: () => {
-      notification.success({
-        message: "عملیات حذف با موفقیت انجام شد",
-        placement: "bottomLeft",
-      });
-      rolesRefetch();
-    },
-    onError: () =>
-      notification.error({
-        message: "خطا در حذف نقش",
-        placement: "bottomLeft",
-      }),
   });
-  const { id: clientId } = useParams();
+  const {id: clientId} = useParams();
   const [selectedClientId, setSelectedClientId] = useState(clientId);
   const [selectedRole, setSelectedRole] = useState();
   const [addUserRole, setAddUserRole] = useState(false);
@@ -64,16 +38,26 @@ const RolesManagement = (props) => {
     }
   );
 
-  async function handleDelete(data) {
-    console.log(data)
+  const handleDelete = (value) => {
     mutate({
-      method: "DELETE", 
-      endpoint: "roles",  
-      data: {
-        ...data,
-        clientId: selectedClientId
-      }
-    });
+        method: "DELETE",
+        endpoint: `/roles/${value.id}`,
+      },
+      {
+        onSuccess: () => {
+          notification.success({
+            message: "عملیات حذف با موفقیت انجام شد",
+            placement: "bottomLeft",
+          });
+          rolesRefetch();
+        },
+        onError: (err) => {
+          notification.error({
+            message: err?.message || "خطا در حذف",
+            placement: "bottomLeft",
+          });
+        },
+      });
   }
 
   const columns = useMemo(
@@ -105,7 +89,7 @@ const RolesManagement = (props) => {
                   setSelectedRole(value);
                 }}
               >
-                <AiOutlineUsergroupAdd />
+                <AiOutlineUsergroupAdd/>
               </Button>
             </Tooltip>
             <Tooltip title="حذف">
@@ -114,13 +98,13 @@ const RolesManagement = (props) => {
                 onConfirm={() => handleDelete(value)}
               >
                 <Button>
-                  <AiOutlineDelete />
+                  <AiOutlineDelete/>
                 </Button>
               </Popconfirm>
             </Tooltip>
             <Tooltip title="ویرایش">
               <Button onClick={() => setSelectedRole(value)}>
-                <AiFillEdit />
+                <AiFillEdit/>
               </Button>
             </Tooltip>
           </div>
@@ -162,9 +146,9 @@ const RolesManagement = (props) => {
   return (
     <div>
       {clientsStatus === "loading" ? (
-        <Skeleton.Input active />
+        <Skeleton.Input active/>
       ) : clientsStatus === "error" ? (
-        <ErrorSection handleRefresh={clientsRefetch} />
+        <ErrorSection handleRefresh={clientsRefetch}/>
       ) : clientsStatus === "success" && clients?.data ? (
         <>
           <Form.Item label="سامانه" className="autocomplete-input">
@@ -208,10 +192,10 @@ const RolesManagement = (props) => {
             columns={columns}
             dataSource={roles?.data}
           />
-          <CrudBtn onNew={() => setSelectedRole("create")} />
+          <CrudBtn onNew={() => setSelectedRole("create")}/>
         </>
       ) : rolesStatus === "error" ? (
-        <ErrorSection handleRefresh={rolesRefetch} />
+        <ErrorSection handleRefresh={rolesRefetch}/>
       ) : (
         <></>
       )}

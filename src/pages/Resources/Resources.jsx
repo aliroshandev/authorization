@@ -53,7 +53,7 @@ const Resources = (props) => {
   const handleDelete = (value) => {
     mutate({
         method: "DELETE",
-        endpoint: `resources/${value.id}`,
+        endpoint: `/resources/${value.id}`,
       },
       {
         onSuccess: () => {
