@@ -5,7 +5,7 @@ import {AutoComplete, Button, Form, Spin, Table, Tooltip} from "antd";
 import "./Resources.scss";
 import CrudResource from "./CrudResource";
 import {useNavigate, useParams} from "react-router";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {BackBtn} from "../Buttons/Buttons";
 import ErrorSection from "components/ErrorSection/ErrorSection";
 import {AiFillEdit, AiOutlineDelete} from "react-icons/ai";
