@@ -37,7 +37,7 @@ const Access = () => {
     data: resources,
     status: resourcesStatus,
     refetch: resourcesRefetch,
-  } = useQuery(`/resources/menu-id?menuId=${selectedMenuId}`, getApi, {
+  } = useQuery(`/resources/menu-id/${selectedMenuId}`, getApi, {
     enabled: !!selectedMenuId,
   });
 

@@ -24,7 +24,7 @@ const RoleResource = () => {
     }
   );
   const { data: resources } = useQuery(
-    `/resources/menu-id?menuId=${selectedMenuId}`,
+    `/resources/menu-id/${selectedMenuId}`,
     getApi,
     {
       enabled: !!selectedMenuId,

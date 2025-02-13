@@ -42,7 +42,7 @@ const Resources = (props) => {
   });
 
   const { response, isFetching, refetch } = useQuery(
-    `/resources/menu-id?menuId=${menuId}`,
+    `/resources/menu-id/${menuId}`,
     getApi,
     {
       enabled: !!menuId,
