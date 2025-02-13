@@ -69,6 +69,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
         name: "clientId",
         type: "text",
         isDisabled: true,
+        initialValues: clientId,
         placeholder:
           responseClient?.data?.find((client) => `${client.id}` === clientId)
             ?.description || "عمومی",
