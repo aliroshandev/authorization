@@ -1,29 +1,29 @@
-import React, { useMemo, useState } from "react";
-import { Button, Col, Form, notification, Row } from "antd";
+import React, {useMemo, useState} from "react";
+import {Button, Col, Form, notification, Row} from "antd";
 import RenderElement from "components/RenderElement/RenderElement";
-import { useAuth } from "utils/hooks/useAuth";
-import { useMutation, useQuery } from "react-query";
+import {useAuth} from "utils/hooks/useAuth";
+import {useMutation, useQuery} from "react-query";
 
 const RoleResource = () => {
-  const { sendRequest, getApi } = useAuth();
+  const {sendRequest, getApi} = useAuth();
   const [form] = Form.useForm();
   const [selectedClientId, setSelectedClientId] = useState();
   const [selectedMenuId, setSelectedMenuId] = useState();
   const [resourceId, setResourceId] = useState();
   const [roleId, setRoleId] = useState();
 
-  const { data: clients } = useQuery("/clients", getApi, {
+  const {data: clients} = useQuery("/clients", getApi, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
-  const { data: menus } = useQuery(
+  const {data: menus} = useQuery(
     `/menus/client-id/${selectedClientId}`,
     getApi,
     {
       enabled: !!selectedClientId,
     }
   );
-  const { data: resources } = useQuery(
+  const {data: resources} = useQuery(
     `/resources/menu-id/${selectedMenuId}`,
     getApi,
     {
@@ -31,12 +31,12 @@ const RoleResource = () => {
     }
   );
 
-  const { data: roles } = useQuery("/roles", getApi, {
+  const {data: roles} = useQuery("/roles", getApi, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
 
-  const { isLoading: isUpdating, mutate } = useMutation({
+  const {isLoading: isUpdating, mutate} = useMutation({
     mutationFn: sendRequest,
     onSuccess: () =>
       notification.success({
@@ -74,7 +74,7 @@ const RoleResource = () => {
         handleChange(...rest) {
           setSelectedMenuId(rest[1]?.key);
         },
-        isDisabled: !!selectedClientId ? false : true,
+        isDisabled: !!!selectedClientId,
         size: 12,
       },
       {
@@ -87,7 +87,7 @@ const RoleResource = () => {
         handleChange(...rest) {
           setResourceId(rest[1]?.key);
         },
-        isDisabled: !!selectedMenuId ? false : true,
+        isDisabled: !!!selectedMenuId,
         size: 12,
       },
       {
@@ -137,7 +137,7 @@ const RoleResource = () => {
         <Button
           htmlType="submit"
           type="primary"
-          disabled={roleId && resourceId ? false : true}
+          disabled={!(roleId && resourceId)}
           loading={isUpdating}
         >
           ذخیره
