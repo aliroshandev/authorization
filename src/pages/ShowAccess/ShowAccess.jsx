@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { AutoComplete, Col, Row, Skeleton } from "antd";
+import React, {useState} from "react";
+import {AutoComplete, Col, Row, Skeleton} from "antd";
 // import { useGetApiCall } from "base/hooks/useGetApiCall";
 import "./ShowAccess.scss";
-import { useQuery } from "react-query";
-import { useAuth } from "utils/hooks/useAuth";
+import {useQuery} from "react-query";
+import {useAuth} from "utils/hooks/useAuth";
 
 const ShowAccess = () => {
-  const { getApi } = useAuth();
+  const {getApi} = useAuth();
   const [selectedClientId, setSelectedClientId] = useState("");
 
-  const { data: clients, status: clientsStatus } = useQuery(
+  const {data: clients, status: clientsStatus} = useQuery(
     "clients",
     getApi
   );
@@ -21,7 +21,7 @@ const ShowAccess = () => {
           <div className="client-section">
             <h3>سامانه:</h3>
             {clientsStatus === "loading" ? (
-              <Skeleton.Input active />
+              <Skeleton.Input active/>
             ) : (
               <AutoComplete
                 className="search-form"
