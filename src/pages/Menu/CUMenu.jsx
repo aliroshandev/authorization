@@ -84,7 +84,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
         ]
         : []),
     ],
-    [responseClient?.data, clientId, menus?.data]
+    [responseClient?.data, clientId, menus?.data, selectedMenu]
   );
 
   async function onSubmit() {
