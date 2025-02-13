@@ -22,7 +22,7 @@ const Resources = (props) => {
   const { getApi } = useAuth();
   const { clientId } = props?.location?.state || 0;
   if (!clientId) {
-    navigate("/management/menu");
+    navigate("/menu");
   }
 
   const { id: menuId } = useParams();
@@ -114,7 +114,7 @@ const Resources = (props) => {
     <>
       <div className="header-section">
         <h2>منابع</h2>
-        <Link to={`/management/menu/${selectedClientId}`}>
+        <Link to={`/menu/${selectedClientId}`}>
           <BackBtn />
         </Link>
       </div>
@@ -163,7 +163,7 @@ const Resources = (props) => {
             <AutoComplete
               onSelect={(value, item) => {
                 navigate({
-                  pathname: `/management/resources/${item.key}`,
+                  pathname: `/resources/${item.key}`,
                   state: {
                     clientId: selectedClientId,
                   },
