@@ -14,9 +14,9 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
   const [parentId, setParentId] = useState();
   useEffect(() => {
     if (selectedMenu) {
-      let {path, title} = selectedMenu;
+      let {title, key} = selectedMenu;
       menuForm.setFieldsValue({
-        path,
+        key,
         title,
       });
     }
@@ -67,7 +67,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
       {
         label: "سامانه",
         name: "clientId",
-        type: "text",
+        type: "autocomplete",
         isDisabled: true,
         placeholder:
           responseClient?.data?.find((client) => client.id === clientId)
@@ -88,7 +88,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
             placeholder:
               menus?.data?.find((client) => client.id === selectedMenu?.id)
                 ?.parentName || "",
-            disabled: menus?.data?.length > 0 ? false : true,
+            disabled: menus?.data?.length <= 0,
           },
         ]
         : []),

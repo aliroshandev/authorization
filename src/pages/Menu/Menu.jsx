@@ -17,18 +17,6 @@ const ManageSystemMenu = () => {
   const [selectedClientId, setSelectedClientId] = useState(id);
   const {isLoading, mutate} = useMutation({
     mutationFn: sendRequest,
-    onSuccess: () => {
-      notification.success({
-        message: "عملیات با موفقیت انجام شد",
-        placement: "bottomLeft",
-      });
-    },
-    onError: () => {
-      notification.error({
-        message: "خطا در انجام عملیات",
-        placement: "bottomLeft",
-      });
-    },
   });
 
   const navigate = useNavigate();
