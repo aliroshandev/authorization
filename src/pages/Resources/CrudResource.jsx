@@ -26,10 +26,10 @@ const CrudResource = ({
   });
 
   const {data: menu} = useQuery(`/menus/id/${menuId}`, getApi);
-  const {data: resources, status: resourceStatus} = useQuery(
-    "/resources?currentPage=1&pageSize=20",
-    getApi
-  );
+  // const {data: resources, status: resourceStatus} = useQuery(
+  //   "/resources?currentPage=1&pageSize=20",
+  //   getApi
+  // );
 
   const ITEMS = useMemo(
     () => [
@@ -37,33 +37,15 @@ const CrudResource = ({
         name: "title",
         label: "عنوان",
         type: "text",
-        size: 12,
+        size: 8,
         defaultValue: selectedResource?.title,
       },
       {
         name: "key",
         label: "کلید",
         type: "text",
-        size: 12,
+        size: 8,
         defaultValue: selectedResource?.key,
-      },
-      {
-        name: "parentId",
-        label: "پدر",
-        type: "autocomplete",
-        data:
-          resourceStatus === "loading" || resourceStatus === "error"
-            ? []
-            : resourceStatus === "success"
-              ? resources?.data?.rows
-              : [],
-        autoCompleteValue: "id",
-        autoCompleteTitle: "title",
-        size: 12,
-        onChange: (...rest) => {
-          setParentId(rest[0]?.value);
-        },
-        defaultValue: selectedResource?.parentName,
       },
       {
         name: "menuId",
@@ -71,18 +53,23 @@ const CrudResource = ({
         type: "text",
         isDisabled: true,
         placeholder: menu?.data?.title || "",
-        size: 12,
+        size: 8,
         defaultValue: selectedResource?.menuName,
+      },
+      {
+        name: "url",
+        label: "آدرس",
+        type: "text",
+        size: 12,
+        defaultValue: selectedResource?.url,
       },
     ],
     [
       selectedResource?.title,
-      selectedResource?.key,
-      selectedResource?.parentName,
-      selectedResource?.menuName,
-      resourceStatus,
-      resources?.data?.rows,
+      selectedResource?.url,
       menu?.data?.title,
+      selectedResource?.key,
+      selectedResource?.menuName,
     ]
   );
 

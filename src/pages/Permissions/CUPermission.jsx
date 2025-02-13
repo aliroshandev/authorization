@@ -82,7 +82,6 @@ const CUPermission = ({onBack, selectedPermission, refetch}) => {
   ];
 
   async function onSubmit(values) {
-    const {title} = values
     const temp = menuForm.getFieldsValue();
     mutate({
         method: isCreate ? "post" : "PUT",

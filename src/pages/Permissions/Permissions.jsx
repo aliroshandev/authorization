@@ -1,13 +1,13 @@
-import {Button, Table, Tooltip} from "antd";
+import {Button, notification, Popconfirm, Table, Tooltip} from "antd";
 import {useState} from "react";
 import CrudBtn from "components/CrudBtn/CrudBtn";
 import CUPermission from "./CUPermission";
-import {AiFillEdit} from "react-icons/ai";
-import {useQuery} from "react-query";
+import {AiFillEdit, AiOutlineDelete} from "react-icons/ai";
+import {useMutation, useQuery} from "react-query";
 import {useAuth} from "utils/hooks/useAuth";
 
 const Permissions = () => {
-  const {getApi} = useAuth();
+  const {getApi, sendRequest} = useAuth();
   const [selectedPermission, setSelectedPermission] = useState();
   const {
     data: roleData,
@@ -17,6 +17,32 @@ const Permissions = () => {
     "/permissions?pageSize=20&currentPage=1",
     getApi
   );
+
+  const {isLoading, mutate} = useMutation({
+    mutationFn: sendRequest,
+  });
+
+  const handleDelete = (value) => {
+    mutate({
+        method: "DELETE",
+        endpoint: `permissions/${value.id}`,
+      },
+      {
+        onSuccess: () => {
+          notification.success({
+            message: "عملیات حذف با موفقیت انجام شد",
+            placement: "bottomLeft",
+          });
+          refetch();
+        },
+        onError: (err) => {
+          notification.error({
+            message: err?.message || "خطا در حذف",
+            placement: "bottomLeft",
+          });
+        },
+      })
+  };
 
   const columns = [
     {
@@ -30,18 +56,40 @@ const Permissions = () => {
       dataIndex: "title",
     },
     {
+      title: "کلید",
+      dataIndex: "key",
+    },
+    {
+      title: "آدرس",
+      dataIndex: "url",
+    },
+    {
+      title: "متد درخواست",
+      dataIndex: "httpRequestMethod",
+    },
+    {
       title: "عملیات",
       dataIndex: "parentId",
       render: (text, value) => (
-        <Tooltip title="ویرایش">
-          <Button
-            type="link"
-            danger
-            onClick={() => setSelectedPermission(value)}
+        <>
+          <Popconfirm
+            title="آیا از حذف دسترسی اطمینان دارید؟"
+            onConfirm={() => handleDelete(value)}
           >
-            <AiFillEdit className="icon"/>
-          </Button>
-        </Tooltip>
+            <Button>
+              <AiOutlineDelete />
+            </Button>
+          </Popconfirm>
+          <Tooltip title="ویرایش">
+            <Button
+              type="link"
+              danger
+              onClick={() => setSelectedPermission(value)}
+            >
+              <AiFillEdit className="icon"/>
+            </Button>
+          </Tooltip>
+        </>
       ),
     },
   ];

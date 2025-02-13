@@ -1,7 +1,7 @@
 import CrudBtn from "components/CrudBtn/CrudBtn";
 import React, {useMemo, useState} from "react";
 // import { useGetApiCall } from "base/hooks/useGetApiCall";
-import {AutoComplete, Button, Form, Spin, Table, Tooltip} from "antd";
+import {AutoComplete, Button, Form, notification, Popconfirm, Spin, Table, Tooltip} from "antd";
 import "./Resources.scss";
 import CrudResource from "./CrudResource";
 import {useNavigate, useParams} from "react-router";
@@ -10,7 +10,7 @@ import {BackBtn} from "../Buttons/Buttons";
 import ErrorSection from "components/ErrorSection/ErrorSection";
 import {AiFillEdit, AiOutlineDelete} from "react-icons/ai";
 import {useAuth} from "utils/hooks/useAuth";
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 
 // const {createRoot} = ReactDOM;
 // const {Button, Table } = antd;
@@ -18,7 +18,7 @@ import {useQuery} from "react-query";
 
 const Resources = (props) => {
   const navigate = useNavigate();
-  const {getApi} = useAuth();
+  const {getApi, sendRequest} = useAuth();
 
   const {id: menuId} = useParams();
   const [selectedClientId, setSelectedClientId] = useState(menuId);
@@ -45,6 +45,33 @@ const Resources = (props) => {
   );
   const [selectedResource, setSelectedResource] = useState("");
 
+
+  const {isLoading, mutate} = useMutation({
+    mutationFn: sendRequest,
+  });
+
+  const handleDelete = (value) => {
+    mutate({
+        method: "DELETE",
+        endpoint: `resources/${value.id}`,
+      },
+      {
+        onSuccess: () => {
+          notification.success({
+            message: "عملیات حذف با موفقیت انجام شد",
+            placement: "bottomLeft",
+          });
+          refetch();
+        },
+        onError: (err) => {
+          notification.error({
+            message: err?.message || "خطا در حذف",
+            placement: "bottomLeft",
+          });
+        },
+      })
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -64,16 +91,23 @@ const Resources = (props) => {
         key: "key",
       },
       {
+        title: "آدرس",
+        dataIndex: "url",
+      },
+      {
         title: "عملیات",
         dataIndex: "actions",
         key: "actions",
         render: (text, value) => (
           <>
-            <Tooltip title="ویرایش">
-              <Button type="link" danger>
-                <AiOutlineDelete className="icon"/>
+            <Popconfirm
+              title="آیا از حذف منبع اطمینان دارید؟"
+              onConfirm={() => handleDelete(value)}
+            >
+              <Button>
+                <AiOutlineDelete />
               </Button>
-            </Tooltip>
+            </Popconfirm>
             <Tooltip title="ویرایش">
               <Button
                 type="link"
