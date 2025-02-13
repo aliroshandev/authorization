@@ -1,23 +1,23 @@
-import { Form, Row, Col } from "antd";
-import { useMemo, useState } from "react";
-import { useForm } from "antd/es/form/Form";
+import {Col, Form, Row} from "antd";
+import {useMemo, useState} from "react";
+import {useForm} from "antd/es/form/Form";
 import RenderElement from "components/RenderElement/RenderElement";
-import { FormButtons } from "../Buttons/Buttons";
-import { useAuth } from "utils/hooks/useAuth";
-import { useMutation, useQuery } from "react-query";
+import {FormButtons} from "../Buttons/Buttons";
+import {useAuth} from "utils/hooks/useAuth";
+import {useMutation, useQuery} from "react-query";
 
 const CrudResource = ({
-  onBack,
-  refetch,
-  menuId,
-  selectedResource,
-  isCreate,
-}) => {
-  const { getApi, sendRequest } = useAuth();
+                        onBack,
+                        refetch,
+                        menuId,
+                        selectedResource,
+                        isCreate,
+                      }) => {
+  const {getApi, sendRequest} = useAuth();
   const [nameForm] = useForm();
   const [parentId, setParentId] = useState();
 
-  const { isLoading, mutate } = useMutation({
+  const {isLoading, mutate} = useMutation({
     mutationFn: sendRequest,
     onSuccess: () => {
       refetch();
@@ -25,13 +25,9 @@ const CrudResource = ({
     },
   });
 
-  const { data: menu } = useQuery(`/menus/id/${menuId}`, getApi);
-  const { data: resources, status: resourceStatus } = useQuery(
+  const {data: menu} = useQuery(`/menus/id/${menuId}`, getApi);
+  const {data: resources, status: resourceStatus} = useQuery(
     "/resources?currentPage=1&pageSize=20",
-    getApi
-  );
-  const { data: resourceType, status: resourceTypeStatus } = useQuery(
-    "/resource-types?pageSize=20&currentPage=1",
     getApi
   );
 
@@ -59,8 +55,8 @@ const CrudResource = ({
           resourceStatus === "loading" || resourceStatus === "error"
             ? []
             : resourceStatus === "success"
-            ? resources?.data?.rows
-            : [],
+              ? resources?.data?.rows
+              : [],
         autoCompleteValue: "id",
         autoCompleteTitle: "title",
         size: 12,
@@ -78,33 +74,15 @@ const CrudResource = ({
         size: 12,
         defaultValue: selectedResource?.menuName,
       },
-      {
-        name: "resourceTypeId",
-        label: "نوع",
-        type: "dropdown",
-        options:
-          resourceTypeStatus === "loading" || resourceTypeStatus === "error"
-            ? []
-            : resourceTypeStatus === "success"
-            ? resourceType?.data?.rows
-            : [],
-        autoCompleteValue: "id",
-        autoCompleteTitle: "title",
-        size: 12,
-        defaultValue: selectedResource?.resourceTypeId,
-      },
     ],
     [
       selectedResource?.title,
       selectedResource?.path,
       selectedResource?.parentName,
       selectedResource?.menuName,
-      selectedResource?.resourceTypeId,
       resourceStatus,
       resources?.data?.rows,
       menu?.data?.title,
-      resourceTypeStatus,
-      resourceType?.data?.rows,
     ]
   );
 
@@ -137,7 +115,7 @@ const CrudResource = ({
           </Col>
         ))}
       </Row>
-      <FormButtons onBack={onBack} isUpdating={isLoading} />
+      <FormButtons onBack={onBack} isUpdating={isLoading}/>
     </Form>
   );
 };
