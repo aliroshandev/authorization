@@ -5,8 +5,8 @@ import { AutoComplete, Button, Form, Spin, Table, Tooltip } from "antd";
 import { useState } from "react";
 import "./Resources.scss";
 import CrudResource from "./CrudResource";
-import { useNavigate, useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router";
+import {Link} from "react-router-dom";
 import { BackBtn } from "../Buttons/Buttons";
 import ErrorSection from "components/ErrorSection/ErrorSection";
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
@@ -20,13 +20,13 @@ import { useQuery } from "react-query";
 const Resources = (props) => {
   const navigate = useNavigate();
   const { getApi } = useAuth();
-  const { clientId } = props?.location?.state || 0;
+  const { clientId } = useSearchParams();
   if (!clientId) {
     navigate("/menu");
   }
 
   const { id: menuId } = useParams();
-  const [selectedClientId, setSelectedClientId] = useState(clientId);
+  const [selectedClientId, setSelectedClientId] = useState(menuId);
   const {
     data: clients,
     status: clientsStatus,
