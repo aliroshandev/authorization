@@ -19,10 +19,6 @@ import {useQuery} from "react-query";
 const Resources = (props) => {
   const navigate = useNavigate();
   const {getApi} = useAuth();
-  const [searchParams, setSearchParams] = useSearchParams();
-  if (!searchParams.get('clientId')) {
-    navigate("/menu");
-  }
 
   const {id: menuId} = useParams();
   const [selectedClientId, setSelectedClientId] = useState(menuId);
