@@ -1,12 +1,10 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Manager from "./pages/Manager/Manager";
 import Resources from "./pages/Resources/Resources";
 import Permissions from "./pages/Permissions/Permissions";
 import Roles from "./pages/Roles/Roles";
-import Users from "./pages/Users/Users";
 import ManageSystemMenu from "./pages/Menu/Menu";
-import ResourcesType from "./pages/ResourcesType/ResourcesType";
 import RoleResource from "./pages/RoleResource/RoleResource";
 import Access from "./pages/Access/Access";
 import ShowAccess from "./pages/ShowAccess/ShowAccess";
@@ -19,11 +17,6 @@ const AuthRoutes = () => {
       <Route key="/Manager" path="/manager" element={<Manager />} />
 
       <Route key="/Resources" path="/resources/:id" element={<Resources />} />
-      <Route
-        key="/ResourcesType"
-        path="/resources-type"
-        element={<ResourcesType />}
-      />
       <Route key="/Permissions" path="/permissions" element={<Permissions />} />
       <Route key="/Roles" path="/roles" element={<Roles />} />
       <Route

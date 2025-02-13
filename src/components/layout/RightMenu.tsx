@@ -45,13 +45,6 @@ const RightMenu: React.FC<Props> = ({isRightMenuCollapsed}) => {
           onClick: () => navigate("/menu"),
         },
         {
-          label: "نوع منابع",
-          link: "resources-type",
-          key: "resources-type",
-          icon: <TiLightbulb/>,
-          onClick: () => navigate("/menu"),
-        },
-        {
           label: "تخصیص نقش به مجوز",
           link: "access",
           key: "access",

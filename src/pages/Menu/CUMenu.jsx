@@ -40,7 +40,7 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
   });
 
   const {data: responseClient} = useQuery(
-    "/clients?currentPage=1&pageSize=1000",
+    "/clients",
     getApi
   );
 
