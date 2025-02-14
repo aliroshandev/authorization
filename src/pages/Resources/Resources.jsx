@@ -22,7 +22,7 @@ const Resources = (props) => {
   const locationHook = useLocation();
 
   const {id: menuId} = useParams();
-  const [selectedClientId, setSelectedClientId] = useState(locationHook.state.clientId);
+  const [selectedClientId, setSelectedClientId] = useState(locationHook.state?.clientId);
   const {
     data: clients,
     status: clientsStatus,
