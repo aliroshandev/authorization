@@ -20,8 +20,8 @@ const Resources = (props) => {
   const navigate = useNavigate();
   const {getApi, sendRequest} = useAuth();
 
-  const {id: menuId} = useParams();
-  const [selectedClientId, setSelectedClientId] = useState(menuId);
+  const {id: menuId, resourceId} = useParams();
+  const [selectedClientId, setSelectedClientId] = useState(resourceId);
   const {
     data: clients,
     status: clientsStatus,
@@ -191,12 +191,7 @@ const Resources = (props) => {
           ) : menusStatus === "success" && selectedClientId ? (
             <AutoComplete
               onSelect={(value, item) => {
-                navigate({
-                  pathname: `/resources/${item.key}`,
-                  state: {
-                    clientId: selectedClientId,
-                  },
-                });
+                navigate(`menu/${selectedClientId}/resources/${item.key}`);
               }}
               filterOption={(inputValue, option) =>
                 option.children.includes(inputValue)

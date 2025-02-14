@@ -42,6 +42,10 @@ const ManageSystemMenu = () => {
   });
 
   useEffect(() => {
+
+  }, [id, setSelectedClientId])
+
+  useEffect(() => {
     console.log(clientsData?.data);
   }, [clientsData?.data, clientsStatus]);
 
@@ -96,8 +100,7 @@ const ManageSystemMenu = () => {
             <Button>
               <Link
                 to={{
-                  pathname: `/resources/${value.id}`,
-                  state: {clientId: selectedClientId},
+                  pathname: `menu/${selectedClientId}/resources/${value.id}`,
                 }}
                 state={{id: value.id}}
               >

@@ -13,7 +13,6 @@ import Dashboard from "pages/Dashboard";
 const AuthRoutes = () => {
   return (
     <Routes>
-      <Route key="/Resources" path="/resources/:id" element={<Resources/>}/>
       <Route key="/Permissions" path="/permissions" element={<Permissions/>}/>
       <Route key="/Roles" path="/roles" element={<Roles/>}/>
       <Route
@@ -28,7 +27,9 @@ const AuthRoutes = () => {
       />
       {/*<Route key="/Users" path="users" element={<Users />} />*/}
       <Route key="/Menu" path="/menu" element={<ManageSystemMenu/>}/>
-      <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu/>}/>
+      <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu/>}>
+        <Route key="/Resources" path="/resources/:resourceId" element={<Resources/>}/>
+      </Route>
       <Route
         key="/RoleResource"
         path="/role-resource"
