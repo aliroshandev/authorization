@@ -23,15 +23,12 @@ const Resources = (props) => {
 
   const {id: menuId} = useParams();
   const [selectedClientId, setSelectedClientId] = useState(locationHook.state?.clientId);
+  const [selectedMenuId, setSelectedMenuId] = useState(menuId);
   const {
     data: clients,
     status: clientsStatus,
     refetch: clientsRefetch,
   } = useQuery("/clients", getApi);
-
-  useEffect(() => {
-    console.log('selectedMenuId: ', menuId);
-  }, [menuId]);
 
   const {
     data: menus,
@@ -42,10 +39,10 @@ const Resources = (props) => {
   });
 
   const {data: response, isFetching, refetch} = useQuery(
-    `/resources/menu-id/${menuId}`,
+    `/resources/menu-id/${selectedMenuId}`,
     getApi,
     {
-      enabled: !!menuId,
+      enabled: !!selectedMenuId,
     }
   );
   const [selectedResource, setSelectedResource] = useState("");
@@ -135,7 +132,7 @@ const Resources = (props) => {
         onBack={() => setSelectedResource("")}
         refetch={refetch}
         clientId={selectedClientId}
-        menuId={menuId}
+        menuId={selectedMenuId}
         isCreate={selectedResource === "create"}
         selectedResource={
           selectedResource === "create" ? null : selectedResource
@@ -197,21 +194,18 @@ const Resources = (props) => {
           ) : menusStatus === "success" && selectedClientId ? (
             <AutoComplete
               onSelect={(value, item) => {
-                console.log({
-                  item,
-                  value
-                });
-                navigate(`/resources/${item.key}`, {
-                  state: {
-                    clientId: selectedClientId
-                  }
-                });
+                setSelectedMenuId(item.key);
+                // navigate(`/resources/${item.key}`, {
+                //   state: {
+                //     clientId: selectedClientId
+                //   }
+                // });
               }}
               filterOption={(inputValue, option) =>
                 option.children.includes(inputValue)
               }
               defaultValue={
-                menus?.data?.find((menu) => menu.id === menuId)?.title
+                menus?.data?.find((menu) => menu.id === selectedMenuId)?.title
               }
             >
               {menus?.data?.map((client) => {
