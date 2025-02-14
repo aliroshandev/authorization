@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {AutoComplete, ConfigProvider, Form, Input, InputNumber, Select, Skeleton,} from "antd";
-import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons";
 import {DatePicker, JalaliLocaleListener} from "antd-jalali";
 import fa_IR from "antd/lib/locale/fa_IR";
 import moment from "jalali-moment";
 import "./RenderElement.scss";
+import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 
 //Elements Type => text, dropdown, date, autocomplete
 const RenderElement = ({
@@ -74,7 +74,7 @@ const RenderElement = ({
       <Form.Item label={label} name={name} rules={rules}>
         <Input.Password
           iconRender={(visible) =>
-            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            visible ? <AiFillEye /> : <AiFillEyeInvisible />
           }
         />
       </Form.Item>
