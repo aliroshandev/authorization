@@ -4,8 +4,8 @@ import React, {useMemo, useState} from "react";
 import {AutoComplete, Button, Form, notification, Popconfirm, Spin, Table, Tooltip} from "antd";
 import "./Resources.scss";
 import CrudResource from "./CrudResource";
-import {useNavigate, useParams} from "react-router";
-import {Link} from "react-router-dom";
+import {useParams} from "react-router";
+import {Link, useNavigate} from "react-router-dom";
 import {BackBtn} from "../Buttons/Buttons";
 import ErrorSection from "components/ErrorSection/ErrorSection";
 import {AiFillEdit, AiOutlineDelete} from "react-icons/ai";
@@ -105,7 +105,7 @@ const Resources = (props) => {
               onConfirm={() => handleDelete(value)}
             >
               <Button>
-                <AiOutlineDelete />
+                <AiOutlineDelete/>
               </Button>
             </Popconfirm>
             <Tooltip title="ویرایش">
