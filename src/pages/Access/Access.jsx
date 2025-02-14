@@ -36,11 +36,21 @@ const Access = () => {
     enabled: !!selectedClientId,
   });
 
+  // const {
+  //   data: resources,
+  //   status: resourcesStatus,
+  //   refetch: resourcesRefetch,
+  // } = useQuery(`/resource-permission/find-by-menu-id/${selectedMenuId}`,
+  //   getApi,
+  //   {
+  //     enabled: !!selectedMenuId,
+  //   });
+
   const {
     data: resources,
     status: resourcesStatus,
     refetch: resourcesRefetch,
-  } = useQuery(`/resource-permission/find-by-menu-id/${selectedMenuId}`,
+  } = useQuery(`/resources/menu-id/${selectedMenuId}`,
     getApi,
     {
       enabled: !!selectedMenuId,
