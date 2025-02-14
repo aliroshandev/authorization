@@ -99,10 +99,8 @@ const ManageSystemMenu = () => {
           <Tooltip title=" لیست منابع">
             <Button>
               <Link
-                to={{
-                  pathname: `resources/${value.id}?clientId=${selectedClientId}`,
-                }}
-                state={{id: value.id}}
+                to={`/resources/${value.id}`}
+                state={{id: value.id, clientId: selectedClientId}}
               >
                 <AiOutlineOrderedList/>
               </Link>

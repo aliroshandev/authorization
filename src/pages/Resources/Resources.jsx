@@ -21,7 +21,7 @@ const Resources = (props) => {
   const {getApi, sendRequest} = useAuth();
 
   const {id: menuId} = useParams();
-  const [selectedClientId, setSelectedClientId] = useState(menuId);
+  const [selectedClientId, setSelectedClientId] = useState(props.location.state.clientId);
   const {
     data: clients,
     status: clientsStatus,
@@ -200,7 +200,12 @@ const Resources = (props) => {
                   item,
                   value
                 });
-                navigate(`/resources/${item.key}`);
+                navigate({
+                  pathname: `/resources/${item.key}`,
+                  state: {
+                    clientId: selectedClientId
+                  }
+                });
               }}
               filterOption={(inputValue, option) =>
                 option.children.includes(inputValue)
