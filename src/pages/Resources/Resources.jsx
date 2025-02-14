@@ -201,8 +201,7 @@ const Resources = (props) => {
                   item,
                   value
                 });
-                navigate({
-                  pathname: `/resources/${item.key}`,
+                navigate(`/resources/${item.key}`, {
                   state: {
                     clientId: selectedClientId
                   }
