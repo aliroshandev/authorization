@@ -37,10 +37,10 @@ const Resources = (props) => {
   });
 
   const {data: response, isFetching, refetch} = useQuery(
-    `/resources/menu-id/${menuId}`,
+    `/resources/menu-id/${resourceId}`,
     getApi,
     {
-      enabled: !!menuId,
+      enabled: !!resourceId,
     }
   );
   const [selectedResource, setSelectedResource] = useState("");
@@ -130,7 +130,7 @@ const Resources = (props) => {
         onBack={() => setSelectedResource("")}
         refetch={refetch}
         clientId={selectedClientId}
-        menuId={menuId}
+        menuId={resourceId}
         isCreate={selectedResource === "create"}
         selectedResource={
           selectedResource === "create" ? null : selectedResource

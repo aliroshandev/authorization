@@ -28,7 +28,7 @@ const AuthRoutes = () => {
       {/*<Route key="/Users" path="users" element={<Users />} />*/}
       <Route key="/Menu" path="/menu" element={<ManageSystemMenu/>}/>
       <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu/>}>
-        <Route key="/Resources" path="/resources/:resourceId" element={<Resources/>}/>
+        <Route key="/Resources" path="resources/:resourceId" element={<Resources/>}/>
       </Route>
       <Route
         key="/RoleResource"
