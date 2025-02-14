@@ -1,5 +1,5 @@
 import CrudBtn from "components/CrudBtn/CrudBtn";
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 // import { useGetApiCall } from "base/hooks/useGetApiCall";
 import {AutoComplete, Button, Form, notification, Popconfirm, Spin, Table, Tooltip} from "antd";
 import "./Resources.scss";
@@ -20,13 +20,17 @@ const Resources = (props) => {
   const navigate = useNavigate();
   const {getApi, sendRequest} = useAuth();
 
-  const {id: menuId, resourceId} = useParams();
-  const [selectedClientId, setSelectedClientId] = useState(resourceId);
+  const {id: menuId} = useParams();
+  const [selectedClientId, setSelectedClientId] = useState(menuId);
   const {
     data: clients,
     status: clientsStatus,
     refetch: clientsRefetch,
   } = useQuery("/clients", getApi);
+
+  useEffect(() => {
+    console.log('selectedMenuId: ', menuId);
+  }, [menuId]);
 
   const {
     data: menus,
@@ -37,10 +41,10 @@ const Resources = (props) => {
   });
 
   const {data: response, isFetching, refetch} = useQuery(
-    `/resources/menu-id/${resourceId}`,
+    `/resources/menu-id/${menuId}`,
     getApi,
     {
-      enabled: !!resourceId,
+      enabled: !!menuId,
     }
   );
   const [selectedResource, setSelectedResource] = useState("");
@@ -130,7 +134,7 @@ const Resources = (props) => {
         onBack={() => setSelectedResource("")}
         refetch={refetch}
         clientId={selectedClientId}
-        menuId={resourceId}
+        menuId={menuId}
         isCreate={selectedResource === "create"}
         selectedResource={
           selectedResource === "create" ? null : selectedResource
@@ -157,6 +161,7 @@ const Resources = (props) => {
             <AutoComplete
               onSelect={(value, item) => {
                 setSelectedClientId(item.key);
+                menusRefetch();
               }}
               filterOption={(inputValue, option) =>
                 option.children.includes(inputValue)
@@ -191,7 +196,11 @@ const Resources = (props) => {
           ) : menusStatus === "success" && selectedClientId ? (
             <AutoComplete
               onSelect={(value, item) => {
-                navigate(`menu/${selectedClientId}/resources/${item.key}`);
+                console.log({
+                  item,
+                  value
+                });
+                navigate(`/resources/${item.key}`);
               }}
               filterOption={(inputValue, option) =>
                 option.children.includes(inputValue)

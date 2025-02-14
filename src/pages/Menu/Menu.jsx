@@ -100,7 +100,7 @@ const ManageSystemMenu = () => {
             <Button>
               <Link
                 to={{
-                  pathname: `menu/${selectedClientId}/resources/${value.id}`,
+                  pathname: `resources/${value.id}?clientId=${selectedClientId}`,
                 }}
                 state={{id: value.id}}
               >
