@@ -1,7 +1,8 @@
 import React, {useMemo, useState} from "react";
 import {AutoComplete, Button, Form, notification, Popconfirm, Skeleton, Table, Tooltip,} from "antd";
 import ErrorSection from "components/ErrorSection/ErrorSection";
-import {useNavigate, useParams} from "react-router";
+import {useParams} from "react-router";
+import {useNavigate} from "react-router-dom";
 import RoleCrud from "./RoleCrud";
 import {AiFillEdit, AiOutlineDelete, AiOutlineUsergroupAdd,} from "react-icons/ai";
 import "./RolesManagement.scss";

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useAuth } from "utils/hooks/useAuth";
 import { BackBtn } from "../Buttons/Buttons";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 
 const AssignRoleToUser = ({ onBack, selectedRole }) => {
   const { sendRequest, getApi } = useAuth();
