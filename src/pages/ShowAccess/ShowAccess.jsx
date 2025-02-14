@@ -5,18 +5,21 @@ import "./ShowAccess.scss";
 import {useQuery} from "react-query";
 import {useAuth} from "utils/hooks/useAuth";
 import {AiOutlineTable} from "react-icons/ai";
+import ErrorSection from "../../components/ErrorSection/ErrorSection";
 
 const ShowAccess = () => {
   const {getApi} = useAuth();
   const [selectedClientId, setSelectedClientId] = useState("");
+  const [selectedRoleId, setSelectedRoleId] = useState();
+  const [showAccessTable, setShowAccessTable] = useState(false);
 
-  const {data: clients, status: clientsStatus} = useQuery(
+  const {data: clients, status: clientsStatus, refetch: clientsRefetch} = useQuery(
     "/clients",
     getApi
   );
 
   const {
-    response: roles,
+    data: roles,
     status: rolesStatus,
     refetchApi: rolesRefetch,
   } = useQuery(
@@ -32,9 +35,9 @@ const ShowAccess = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>سامانه:</h3>
-            {clientsStatus === "rejected" ? (
+            {clientsStatus === "error" ? (
               <ErrorSection handleRefresh={clientsRefetch}/>
-            ) : clientsStatus === "pending" ? (
+            ) : clientsStatus === "loading" ? (
               <Skeleton.Input active/>
             ) : (
               <AutoComplete
@@ -69,9 +72,9 @@ const ShowAccess = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>نقش:</h3>
-            {rolesStatus === "rejected" ? (
+            {rolesStatus === "error" ? (
               <ErrorSection handleRefresh={rolesRefetch}/>
-            ) : rolesStatus === "pending" ? (
+            ) : rolesStatus === "loading" ? (
               <Skeleton.Input active/>
             ) : (
               <AutoComplete
