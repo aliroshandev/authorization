@@ -1,42 +1,51 @@
 import React, {useState} from "react";
-import {AutoComplete, Col, Row, Skeleton} from "antd";
+import {AutoComplete, Button, Col, Row, Skeleton} from "antd";
 // import { useGetApiCall } from "base/hooks/useGetApiCall";
 import "./ShowAccess.scss";
 import {useQuery} from "react-query";
 import {useAuth} from "utils/hooks/useAuth";
+import {AiOutlineTable} from "react-icons/ai";
 
 const ShowAccess = () => {
   const {getApi} = useAuth();
   const [selectedClientId, setSelectedClientId] = useState("");
 
   const {data: clients, status: clientsStatus} = useQuery(
-    "clients",
+    "/clients",
     getApi
   );
 
+  const {
+    response: roles,
+    status: rolesStatus,
+    refetchApi: rolesRefetch,
+  } = useGetApiCall({
+    endpoint: `/roles/client-id?clientId=${selectedClientId}&pageSize=100&currentPage=1`,
+    enabled: !!selectedClientId,
+  });
+
   return (
-    <div className="show-access-section">
+    <div className="access-section">
       <Row>
         <Col md={8}>
           <div className="client-section">
             <h3>سامانه:</h3>
-            {clientsStatus === "loading" ? (
+            {clientsStatus === "rejected" ? (
+              <ErrorSection handleRefresh={clientsRefetch}/>
+            ) : clientsStatus === "pending" ? (
               <Skeleton.Input active/>
             ) : (
               <AutoComplete
                 className="search-form"
                 onSelect={(value, item) => {
                   setSelectedClientId(item.key);
-                  console.log(value, item)
                 }}
                 filterOption={(inputValue, option) =>
                   option.children.includes(inputValue)
                 }
                 placeholder={"سامانه را انتخاب کنید"}
+                disabled={showAccessTable}
                 allowClear
-                style={{
-                  width: 200,
-                }}
               >
                 {clients?.data
                   ?.filter((client) => client.description)
@@ -54,32 +63,59 @@ const ShowAccess = () => {
             )}
           </div>
         </Col>
+
         <Col md={8}>
           <div className="client-section">
-            <h3>منو:</h3>
-            <AutoComplete
-              className="search-form"
-              // onSelect={(value, item) => {
-              //   setSelectedMenuId(item.key);
-              // }}
-              filterOption={(inputValue, option) =>
-                option.children.includes(inputValue)
-              }
-              placeholder={"منو را انتخاب کنید"}
-              // disabled={showAccessTable}
-              allowClear
-            >
-              {/* {menus?.data?.map((client) => {
-                return (
-                  <AutoComplete.Option key={client.id} value={client.title}>
-                    {`${client.title}`}
-                  </AutoComplete.Option>
-                );
-              })} */}
-            </AutoComplete>
+            <h3>نقش:</h3>
+            {rolesStatus === "rejected" ? (
+              <ErrorSection handleRefresh={rolesRefetch}/>
+            ) : rolesStatus === "pending" ? (
+              <Skeleton.Input active/>
+            ) : (
+              <AutoComplete
+                className="search-form"
+                onSelect={(value, item) => {
+                  setSelectedRoleId(item.key);
+                }}
+                filterOption={(inputValue, option) =>
+                  option.children.includes(inputValue)
+                }
+                placeholder={"نقش را انتخاب کنید"}
+                disabled={showAccessTable}
+                allowClear
+              >
+                {roles?.data?.rows?.map((client) => {
+                  return (
+                    <AutoComplete.Option key={client.id} value={client.name}>
+                      {`${client.name}`}
+                    </AutoComplete.Option>
+                  );
+                })}
+              </AutoComplete>
+            )}
           </div>
         </Col>
       </Row>
+      {selectedRoleId && (
+        <div className="control-button">
+          <Button
+            type="primary"
+            onClick={() => setShowAccessTable(true)}
+            disabled={showAccessTable}
+          >
+            مشاهده
+            <AiOutlineTable/>
+          </Button>
+          <Button
+            type="danger"
+            onClick={() => setShowAccessTable(false)}
+            disabled={!showAccessTable}
+          >
+            انتخاب مجدد
+            <HiOutlineRefresh/>
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

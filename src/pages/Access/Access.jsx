@@ -1,21 +1,24 @@
-import React, { useRef, useState } from "react";
-import { Col, notification, Row, AutoComplete, Button, Skeleton } from "antd";
+import React, {useEffect, useRef, useState} from "react";
+import {AutoComplete, Button, Col, notification, Row, Skeleton} from "antd";
 import "./Access.scss";
 import ErrorSection from "components/ErrorSection/ErrorSection";
-import { SubmitBtn } from "../Buttons/Buttons";
-import { AiOutlineTable } from "react-icons/ai";
-import { HiOutlineRefresh } from "react-icons/hi";
-import { useAuth } from "utils/hooks/useAuth";
-import { useMutation, useQuery } from "react-query";
+import {SubmitBtn} from "../Buttons/Buttons";
+import {AiOutlineTable} from "react-icons/ai";
+import {HiOutlineRefresh} from "react-icons/hi";
+import {useAuth} from "utils/hooks/useAuth";
+import {useMutation, useQuery} from "react-query";
 
 const Access = () => {
-  const { getApi, sendRequest } = useAuth();
-
   const [selectedClientId, setSelectedClientId] = useState();
   const [selectedMenuId, setSelectedMenuId] = useState();
   const [selectedRoleId, setSelectedRoleId] = useState();
   const [showAccessTable, setShowAccessTable] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [allValues, setAllValues] = useState({});
+  const {getApi, sendRequest} = useAuth();
+  const {isLoading, mutate} = useMutation({
+    mutationFn: sendRequest,
+  });
 
   const tableHeader = useRef();
 
@@ -37,36 +40,87 @@ const Access = () => {
     data: resources,
     status: resourcesStatus,
     refetch: resourcesRefetch,
-  } = useQuery(`/resources/menu-id/${selectedMenuId}`, getApi, {
-    enabled: !!selectedMenuId,
-  });
+  } = useQuery(`/resource-permission/find-by-menu-id/${selectedMenuId}`,
+    getApi,
+    {
+      enabled: !!selectedMenuId,
+    });
 
   const {
     data: roles,
     status: rolesStatus,
     refetch: rolesRefetch,
-  } = useQuery("/roles?pageSize=100&currentPage=1", getApi);
+  } = useQuery(`/roles/client-id?clientId=${selectedClientId}&pageSize=100&currentPage=1`,
+    getApi,
+    {
+      enabled: !!selectedClientId,
+    });
 
-  const { data: permissions } = useQuery(
+  const {
+    data: permissions,
+    // status: permissionsStatus,
+    refetch: permissionsRefetch,
+  } = useQuery(
     "/permissions?pageSize=100&currentPage=1",
     getApi
   );
 
-  const { isLoading, mutate } = useMutation({
-    mutationFn: sendRequest,
-    onSuccess: () => {
-      notification.success({
-        message: "عملیات با موفقیت انجام شد",
-        placement: "bottomLeft",
+  const {
+    data: accessRole,
+    // status: accessRoleStatus,
+    // refetchApi: accessRoleRefetch,
+  } = useQuery(`/access/role/${selectedRoleId}`,
+    getApi,
+    {
+      enabled: !!selectedRoleId,
+    });
+
+  useEffect(() => {
+    const currentPermissions = [];
+    if (accessRole?.data && resources?.data && permissions?.data) {
+      accessRole.data.map((item) => {
+        currentPermissions.push(item.resourcePermissionId);
       });
-    },
-    onError: () => {
-      notification.error({
-        message: "خطا در انجام عملیات",
-        placement: "bottomLeft",
+      resources?.data?.map((resource) => {
+        permissions?.data?.rows?.map((permission) => {
+          const resourceTypePermission = resource.permissionDtoList;
+          // let isChecked = false;
+          let selectedPermission = resourceTypePermission?.find(
+            (rtp) => rtp.title === permission.title
+          );
+
+          accessRole.data.find((accessRoleItem) => {
+            if (selectedPermission?.resourcePermissionId)
+              if (
+                selectedPermission.resourcePermissionId ===
+                accessRoleItem.resourcePermissionId
+              ) {
+                let temp = {...allValues};
+                temp[resource.id] = {
+                  resourceTypePermissionUuidList: [...currentPermissions],
+                };
+                setAllValues((p) => {
+                  return {...p, ...temp};
+                });
+                // isChecked = true;
+              }
+          });
+        });
       });
-    },
-  });
+
+      // setCurrentAccess(accessRole?.data);
+    }
+  }, [allValues, accessRole, resources, permissions]);
+
+  // const {
+  //   response: avalablePermissions,
+  //   status: avalablePermissionsStatus,
+  //   refetchApi: avalablePermissionsRefetch,
+  // } =
+  // useGetApiCall({
+  //   endpoint: `/resource-permission/find-by-menu-id/${selectedMenuId}`,
+  //   enabled: !!selectedMenuId,
+  // });
 
   function togglePermission(id, objectData) {
     if (
@@ -97,19 +151,37 @@ const Access = () => {
 
   async function handleSave() {
     let data = [];
-    for (let [key, values] of Object.entries(allValues)) {
+    for (let [, values] of Object.entries(allValues)) {
       let temp = {
-        resourceId: key,
-        resourceTypePermissionUuidList: values.resourceTypePermissionUuidList,
+        // resourceId: key,
+        resourcePermissions: values.resourceTypePermissionUuidList,
         roleId: selectedRoleId,
       };
       data.push(temp);
     }
+    console.log(data);
+    setIsUpdating(true);
     mutate({
-      method: "POST",
-      endpoint: "access/save-all",
-      data,
-    });
+        method: "POST",
+        endpoint: "access/save-all",
+        data: data[0],
+      },
+      {
+        onSuccess: (res) => {
+          setIsUpdating(false);
+          notification.success({
+            message: "عملیات با موفقیت انجام شد",
+            placement: "bottomLeft",
+          });
+        },
+        onError: (err) => {
+          setIsUpdating(false);
+          notification.error({
+            message: "خطا در انجام عملیات",
+            placement: "bottomLeft",
+          });
+        }
+      });
   }
 
   return (
@@ -118,10 +190,10 @@ const Access = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>سامانه:</h3>
-            {clientsStatus === "error" ? (
-              <ErrorSection handleRefresh={clientsRefetch} />
-            ) : clientsStatus === "loading" ? (
-              <Skeleton.Input active />
+            {clientsStatus === "rejected" ? (
+              <ErrorSection handleRefresh={clientsRefetch}/>
+            ) : clientsStatus === "pending" ? (
+              <Skeleton.Input active/>
             ) : (
               <AutoComplete
                 className="search-form"
@@ -154,10 +226,10 @@ const Access = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>منو:</h3>
-            {menusStatus === "error" ? (
-              <ErrorSection handleRefresh={menusRefetch} />
-            ) : menusStatus === "loading" ? (
-              <Skeleton.Input active />
+            {menusStatus === "rejected" ? (
+              <ErrorSection handleRefresh={menusRefetch}/>
+            ) : menusStatus === "pending" ? (
+              <Skeleton.Input active/>
             ) : (
               <AutoComplete
                 className="search-form"
@@ -186,12 +258,16 @@ const Access = () => {
         <Col md={8}>
           <div className="client-section">
             <h3>نقش:</h3>
-            {rolesStatus === "error" ? (
-              <ErrorSection handleRefresh={rolesRefetch} />
-            ) : rolesStatus === "loading" ? (
-              <Skeleton.Input active />
+            {rolesStatus === "rejected" ? (
+              <ErrorSection handleRefresh={rolesRefetch}/>
+            ) : rolesStatus === "pending" ? (
+              <Skeleton.Input active/>
             ) : (
               <AutoComplete
+                // value={
+                //   roles?.data?.rows.length < 1 &&
+                //   "نقشی برای این سامانه تعریف نشده است!"
+                // }
                 className="search-form"
                 onSelect={(value, item) => {
                   setSelectedRoleId(item.key);
@@ -200,10 +276,10 @@ const Access = () => {
                   option.children.includes(inputValue)
                 }
                 placeholder={"نقش را انتخاب کنید"}
-                disabled={showAccessTable}
+                disabled={showAccessTable || roles?.data?.length < 1}
                 allowClear
               >
-                {roles?.data?.rows?.map((client) => {
+                {roles?.data?.map((client) => {
                   return (
                     <AutoComplete.Option key={client.id} value={client.name}>
                       {`${client.name}`}
@@ -223,7 +299,7 @@ const Access = () => {
             disabled={showAccessTable}
           >
             مشاهده
-            <AiOutlineTable />
+            <AiOutlineTable/>
           </Button>
           <Button
             type="danger"
@@ -231,71 +307,87 @@ const Access = () => {
             disabled={!showAccessTable}
           >
             انتخاب مجدد
-            <HiOutlineRefresh />
+            <HiOutlineRefresh/>
           </Button>
         </div>
       )}
-      {resourcesStatus === "error" ? (
-        <ErrorSection handleRefresh={resourcesRefetch} />
-      ) : resourcesStatus === "loading" ? (
-        <Skeleton active />
-      ) : resourcesStatus === "success" && showAccessTable ? (
+      {resourcesStatus === "rejected" ? (
+        <ErrorSection handleRefresh={resourcesRefetch}/>
+      ) : resourcesStatus === "pending" ? (
+        <Skeleton active/>
+      ) : resourcesStatus === "resolved" && showAccessTable ? (
         <>
           {permissions?.data?.rows?.length > 0 ? (
             <>
               <table className="info-table">
                 <thead>
-                  <tr ref={tableHeader}>
-                    <td>نام منابع</td>
-                    {permissions?.data?.rows?.map((header) => (
-                      <td key={header.id}>{header.title}</td>
-                    ))}
-                  </tr>
+                <tr ref={tableHeader}>
+                  <td>نام منابع</td>
+                  {permissions?.data?.rows?.map((header) => (
+                    <td key={header.id}>{header.title}</td>
+                  ))}
+                </tr>
                 </thead>
                 <tbody>
-                  {resources?.data?.map((resource) => {
-                    return (
-                      <tr key={resource.id}>
-                        <td className="bold-text">{resource.title}</td>
-                        {permissions?.data?.rows?.map((permission) => {
-                          const resourceTypePermission =
-                            resource.resourceTypePermissions;
-                          let selectedPermission = resourceTypePermission?.find(
-                            (rtp) => rtp.permissionTitle === permission.title
+                {resources?.data?.map((resource) => {
+                  return (
+                    <tr key={resource.id}>
+                      <td className="bold-text">{resource.resourceName}</td>
+                      {permissions?.data?.rows?.map((permission) => {
+                        const resourceTypePermission =
+                          resource.permissionDtoList;
+                        let selectedPermission = resourceTypePermission?.find(
+                          (rtp) => rtp.title === permission.title
+                        );
+
+                        if (selectedPermission) {
+                          return (
+                            <td key={permission.permissionTitle}>
+                              <input
+                                type="checkbox"
+                                checked={allValues?.null?.resourceTypePermissionUuidList?.find(
+                                  (accessRoleItem) => {
+                                    if (
+                                      selectedPermission?.resourcePermissionId
+                                    )
+                                      if (
+                                        selectedPermission.resourcePermissionId ===
+                                        accessRoleItem
+                                      ) {
+                                        return true;
+                                      }
+                                  }
+                                )}
+                                value={`${selectedPermission.resourcePermissionId}`}
+                                onChange={(e) => {
+                                  let temp = {...allValues};
+                                  temp[resource.id] = togglePermission(
+                                    selectedPermission.resourcePermissionId,
+                                    temp[resource.id]
+                                  );
+                                  setAllValues((p) => {
+                                    return {...p, ...temp};
+                                  });
+                                }}
+                              />
+                            </td>
                           );
-                          if (selectedPermission) {
-                            return (
-                              <td key={permission.permissionTitle}>
-                                <input
-                                  type="checkbox"
-                                  value={`${selectedPermission.id}`}
-                                  onChange={(e) => {
-                                    let temp = { ...allValues };
-                                    temp[resource.id] = togglePermission(
-                                      selectedPermission.id,
-                                      temp[resource.id]
-                                    );
-                                    setAllValues((p) => ({ ...p, ...temp }));
-                                  }}
-                                />
-                              </td>
-                            );
-                          } else {
-                            return (
-                              <td key={permission.permissionTitle}>---</td>
-                            );
-                          }
-                        })}
-                      </tr>
-                    );
-                  })}
+                        } else {
+                          return (
+                            <td key={permission.permissionTitle}>---</td>
+                          );
+                        }
+                      })}
+                    </tr>
+                  );
+                })}
                 </tbody>
               </table>
               <div className="FormButtons">
                 <SubmitBtn
                   disabled={!selectedMenuId || !selectedRoleId}
                   onSubmit={handleSave}
-                  isUpdating={isLoading}
+                  isUpdating={isUpdating}
                 />
               </div>
             </>
