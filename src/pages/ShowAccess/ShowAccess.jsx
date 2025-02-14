@@ -19,10 +19,12 @@ const ShowAccess = () => {
     response: roles,
     status: rolesStatus,
     refetchApi: rolesRefetch,
-  } = useGetApiCall({
-    endpoint: `/roles/client-id?clientId=${selectedClientId}&pageSize=100&currentPage=1`,
-    enabled: !!selectedClientId,
-  });
+  } = useQuery(
+    `/roles/client-id?clientId=${selectedClientId}&pageSize=100&currentPage=1`,
+    getApi,
+    {
+      enabled: !!selectedClientId,
+    });
 
   return (
     <div className="access-section">
