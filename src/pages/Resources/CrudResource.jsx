@@ -25,7 +25,9 @@ const CrudResource = ({
     },
   });
 
-  const {data: menu} = useQuery(`/menus/id/${menuId}`, getApi);
+  const {data: menu} = useQuery(`/menus/id/${menuId}`, getApi, {
+    enabled: menuId
+  });
   // const {data: resources, status: resourceStatus} = useQuery(
   //   "/resources?currentPage=1&pageSize=20",
   //   getApi
