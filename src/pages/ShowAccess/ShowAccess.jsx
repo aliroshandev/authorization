@@ -90,10 +90,10 @@ const ShowAccess = () => {
                 disabled={showAccessTable}
                 allowClear
               >
-                {roles?.data?.rows?.map((client) => {
+                {roles?.data?.map((client) => {
                   return (
                     <AutoComplete.Option key={client.id} value={client.name}>
-                      {`${client.name}`}
+                      {`${client.name}`} ({`${client.description}`})
                     </AutoComplete.Option>
                   );
                 })}
