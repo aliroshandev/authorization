@@ -4,7 +4,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {AutoComplete, Button, Form, notification, Popconfirm, Spin, Table, Tooltip} from "antd";
 import "./Resources.scss";
 import CrudResource from "./CrudResource";
-import {useParams} from "react-router";
+import {useLocation, useParams} from "react-router";
 import {Link, useNavigate} from "react-router-dom";
 import {BackBtn} from "../Buttons/Buttons";
 import ErrorSection from "components/ErrorSection/ErrorSection";
@@ -19,9 +19,10 @@ import {useMutation, useQuery} from "react-query";
 const Resources = (props) => {
   const navigate = useNavigate();
   const {getApi, sendRequest} = useAuth();
+  const locationHook = useLocation();
 
   const {id: menuId} = useParams();
-  const [selectedClientId, setSelectedClientId] = useState(props.location.state.clientId);
+  const [selectedClientId, setSelectedClientId] = useState(locationHook.state.clientId);
   const {
     data: clients,
     status: clientsStatus,
