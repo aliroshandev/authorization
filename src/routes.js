@@ -9,36 +9,43 @@ import Access from "./pages/Access/Access";
 import ShowAccess from "./pages/ShowAccess/ShowAccess";
 import RolesManagement from "./pages/RolesManagement/RolesManagement";
 import Dashboard from "pages/Dashboard";
+import ResourcePermissions from "./pages/ResourcePermissions/ResourcePermissions";
 
 const AuthRoutes = () => {
-  return (
-    <Routes>
-      <Route key="/Resources" path="/resources/:id" element={<Resources/>}/>
-      <Route key="/Permissions" path="/permissions" element={<Permissions/>}/>
-      <Route key="/Roles" path="/roles" element={<Roles/>}/>
-      <Route
-        key="/Roles-management"
-        path="/roles-management"
-        element={<RolesManagement/>}
-      />
-      <Route
-        key="/Roles-management"
-        path="/roles-management/:id"
-        element={<RolesManagement/>}
-      />
-      {/*<Route key="/Users" path="users" element={<Users />} />*/}
-      <Route key="/Menu" path="/menu" element={<ManageSystemMenu/>}/>
-      <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu/>}/>
-      <Route
-        key="/RoleResource"
-        path="/role-resource"
-        element={<RoleResource/>}
-      />
-      <Route key="/Access" path="/access" element={<Access/>}/>
-      <Route key="/showAccess" path="/show-access" element={<ShowAccess/>}/>
-      <Route key="/dashboard" path="/" element={<Dashboard/>}/>
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route key="/Resources" path="/resources/:id" element={<Resources/>}/>
+            <Route key="/Permissions" path="/permissions" element={<Permissions/>}/>
+            <Route key="/Roles" path="/roles" element={<Roles/>}/>
+            <Route
+                key="/Roles-management"
+                path="/roles-management"
+                element={<RolesManagement/>}
+            />
+            <Route
+                key="/Roles-management"
+                path="/roles-management/:id"
+                element={<RolesManagement/>}
+            />
+            {/*<Route key="/Users" path="users" element={<Users />} />*/}
+            <Route key="/Menu" path="/menu" element={<ManageSystemMenu/>}/>
+            <Route key="/Menu" path="/menu/:id" element={<ManageSystemMenu/>}/>
+            <Route
+                key="/RoleResource"
+                path="/role-resource"
+                element={<RoleResource/>}
+            />
+            <Route
+                key="/ResourcePermissions"
+                exact
+                path="/resource-permissions"
+                element={<ResourcePermissions />}
+            />
+            <Route key="/Access" path="/access" element={<Access/>}/>
+            <Route key="/showAccess" path="/show-access" element={<ShowAccess/>}/>
+            <Route key="/dashboard" path="/" element={<Dashboard/>}/>
+        </Routes>
+    );
 };
 
 export default AuthRoutes;
