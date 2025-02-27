@@ -36,21 +36,11 @@ const Access = () => {
     enabled: !!selectedClientId,
   });
 
-  // const {
-  //   data: resources,
-  //   status: resourcesStatus,
-  //   refetch: resourcesRefetch,
-  // } = useQuery(`/resource-permission/find-by-menu-id/${selectedMenuId}`,
-  //   getApi,
-  //   {
-  //     enabled: !!selectedMenuId,
-  //   });
-
   const {
     data: resources,
     status: resourcesStatus,
     refetch: resourcesRefetch,
-  } = useQuery(`/resources/menu-id/${selectedMenuId}`,
+  } = useQuery(`/resource-permission/find-by-menu-id/${selectedMenuId}`,
     getApi,
     {
       enabled: !!selectedMenuId,
@@ -93,9 +83,9 @@ const Access = () => {
       });
       resources?.data?.map((resource) => {
         permissions?.data?.rows?.map((permission) => {
-          const resourceTypePermission = resource.permissionDtoList;
+          const resourcePermissionsDTO = resource.permissionDtoList;
           // let isChecked = false;
-          let selectedPermission = resourceTypePermission?.find(
+          let selectedPermission = resourcePermissionsDTO?.find(
             (rtp) => rtp.title === permission.title
           );
 
@@ -107,10 +97,11 @@ const Access = () => {
               ) {
                 let temp = {...allValues};
                 temp[resource.id] = {
-                  resourceTypePermissionUuidList: [...currentPermissions],
+                  resourcePermissions: [...currentPermissions],
                 };
                 setAllValues((p) => {
-                  return {...p, ...temp};
+                  Object.assign(p, temp);
+                  return p;
                 });
                 // isChecked = true;
               }
@@ -136,24 +127,24 @@ const Access = () => {
     if (
       !objectData ||
       Object.keys(objectData).length === 0 ||
-      !objectData.resourceTypePermissionUuidList ||
-      objectData.resourceTypePermissionUuidList.length === 0
+      !objectData.resourcePermissions ||
+      objectData.resourcePermissions.length === 0
     ) {
       return {
-        resourceTypePermissionUuidList: [id],
+        resourcePermissions: [id],
       };
     }
-    if (objectData.resourceTypePermissionUuidList.includes(id)) {
+    if (objectData.resourcePermissions.includes(id)) {
       return {
-        resourceTypePermissionUuidList:
-          objectData.resourceTypePermissionUuidList.filter(
+        resourcePermissions:
+          objectData.resourcePermissions.filter(
             (item) => item !== id
           ),
       };
     }
     return {
-      resourceTypePermissionUuidList: [
-        ...objectData.resourceTypePermissionUuidList,
+      resourcePermissions: [
+        ...objectData.resourcePermissions,
         id,
       ],
     };
@@ -164,7 +155,7 @@ const Access = () => {
     for (let [, values] of Object.entries(allValues)) {
       let temp = {
         // resourceId: key,
-        resourcePermissions: values.resourceTypePermissionUuidList,
+        resourcePermissions: values.resourcePermissions,
         roleId: selectedRoleId,
       };
       data.push(temp);
@@ -344,9 +335,9 @@ const Access = () => {
                     <tr key={resource.id}>
                       <td className="bold-text">{resource.resourceName}</td>
                       {permissions?.data?.rows?.map((permission) => {
-                        const resourceTypePermission =
+                        const resourcePermissions =
                           resource.permissionDtoList;
-                        let selectedPermission = resourceTypePermission?.find(
+                        let selectedPermission = resourcePermissions?.find(
                           (rtp) => rtp.title === permission.title
                         );
 
@@ -355,7 +346,7 @@ const Access = () => {
                             <td key={permission.permissionTitle}>
                               <input
                                 type="checkbox"
-                                checked={allValues?.null?.resourceTypePermissionUuidList?.find(
+                                checked={allValues?.null?.resourcePermissions?.find(
                                   (accessRoleItem) => {
                                     if (
                                       selectedPermission?.resourcePermissionId
