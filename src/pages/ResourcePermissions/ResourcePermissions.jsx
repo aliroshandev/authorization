@@ -93,30 +93,29 @@ const ResourcePermissions = () => {
         }
     }, [allValues, accessRole, resources, permissions]);
 
-    function togglePermission(id, objectData) {
-        debugger;
+    function togglePermission(permissionId, objectData) {
         if (
             !objectData ||
             Object.keys(objectData).length === 0 ||
-            !objectData.resourceTypePermissionUuidList ||
-            objectData.resourceTypePermissionUuidList.length === 0
+            !objectData.permissions ||
+            objectData.permissions.length === 0
         ) {
             return {
-                resourceTypePermissionUuidList: [id],
+                permissions: [permissionId],
             };
         }
-        if (objectData.resourceTypePermissionUuidList.includes(id)) {
+        if (objectData.permissions.includes(permissionId)) {
             return {
-                resourceTypePermissionUuidList:
-                    objectData.resourceTypePermissionUuidList.filter(
-                        (item) => item !== id
+                permissions:
+                    objectData.permissions.filter(
+                        (item) => item !== permissionId
                     ),
             };
         }
         return {
-            resourceTypePermissionUuidList: [
-                ...objectData.resourceTypePermissionUuidList,
-                id,
+            permissions: [
+                ...objectData.permissions,
+                permissionId,
             ],
         };
     }
@@ -126,7 +125,7 @@ const ResourcePermissions = () => {
         for (let [key, values] of Object.entries(allValues)) {
             let temp = {
                 resourceId: key,
-                permissions: values.resourceTypePermissionUuidList,
+                permissions: values.permissions,
             };
             data.push(temp);
         }
@@ -151,14 +150,16 @@ const ResourcePermissions = () => {
     }
 
     const isChecked = ({allValues, resourceId, permissionId}) => {
-        console.log(resourceId, permissionId);
+        // console.log(resourceId, permissionId);
         let result = false;
         [allValues]?.map((item) => {
             if (!item[resourceId]) result = false;
-            if (!item[resourceId]?.resourceTypePermissionUuidList) result = false;
+            if (!item[resourceId]?.permissions) result = false;
 
-            item[resourceId]?.resourceTypePermissionUuidList.find(
-                (accessRoleItem) => (permissionId === accessRoleItem.selectedPermission.id)
+            result = item[resourceId]?.permissions?.find(
+                (selectedPermissionId) => {
+                    return (permissionId === selectedPermissionId);
+                }
             );
         });
         return result;
@@ -278,9 +279,9 @@ const ResourcePermissions = () => {
                                         <tr key={resource.id}>
                                             <td className="bold-text">{resource.title}</td>
                                             {permissions?.data?.rows?.map((permission) => {
-                                                // const resourceTypePermission =
+                                                // const resourcePermission =
                                                 //   resource.permissionDtoList;
-                                                // let selectedPermission = resourceTypePermission?.find(
+                                                // let selectedPermission = resourcePermission?.find(
                                                 //   (rtp) => rtp.title === permission.title
                                                 // );
                                                 // const ic = isChecked({
@@ -292,7 +293,7 @@ const ResourcePermissions = () => {
                                                 // console.log("ic", ic);
 
                                                 return (
-                                                    <td key={permission.permissionTitle}>
+                                                    <td key={resource.id + '_' + permission.id}>
                                                         <input
                                                             type="checkbox"
                                                             value={`${permission?.id}`}
@@ -311,7 +312,7 @@ const ResourcePermissions = () => {
                                                             })}
                                                             // checked={allValues[
                                                             //   resource?.id
-                                                            // ]?.resourceTypePermissionUuidList?.find(
+                                                            // ]?.permissions?.find(
                                                             //   (accessRoleItem) => {
                                                             //     debugger;
                                                             //     if (permission?.id === accessRoleItem)
@@ -321,9 +322,9 @@ const ResourcePermissions = () => {
                                                         />
                                                     </td>
                                                 );
-                                                // const resourceTypePermission =
-                                                //   resource.resourceTypePermissions;
-                                                // let selectedPermission = resourceTypePermission?.find(
+                                                // const resourcePermission =
+                                                //   resource.resourcePermissions;
+                                                // let selectedPermission = resourcePermission?.find(
                                                 //   (rtp) => rtp.permissionTitle === permission.title
                                                 // );
                                                 // if (selectedPermission) {

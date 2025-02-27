@@ -5,7 +5,7 @@ import CUMenu from "./CUMenu";
 import "./Menu.scss";
 import ErrorSection from "components/ErrorSection/ErrorSection";
 import {AiFillEdit, AiOutlineDelete, AiOutlineOrderedList,} from "react-icons/ai";
-import {useParams} from "react-router";
+import {useParams} from "react-router-dom";
 import {Link, useNavigate} from "react-router-dom";
 import {useMutation, useQuery} from "react-query";
 import {useAuth} from "utils/hooks/useAuth";
@@ -41,9 +41,10 @@ const ManageSystemMenu = () => {
     enabled: !!selectedClientId,
   });
 
-  useEffect(() => {
-
-  }, [id, setSelectedClientId])
+  // useEffect(() => {
+    // setSelectedClientId(id);
+    // debugger;
+  // }, [id, setSelectedClientId])
 
   useEffect(() => {
     console.log(clientsData?.data);
@@ -79,13 +80,13 @@ const ManageSystemMenu = () => {
       },
     },
     {
+      title: "عنوان",
+      dataIndex: "title",
+    },
+    {
       title: "منوی پدر",
       dataIndex: "parentName",
       render: (item) => <>{item ?? "-"}</>,
-    },
-    {
-      title: "عنوان",
-      dataIndex: "title",
     },
     {
       title: "کلید",
@@ -115,7 +116,9 @@ const ManageSystemMenu = () => {
             </Button>
           </Popconfirm>
           <Tooltip title="ویرایش">
-            <Button onClick={() => setState(value)}>
+            <Button onClick={() => {
+              setState(value)}
+            }>
               <AiFillEdit/>
             </Button>
           </Tooltip>

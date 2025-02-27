@@ -14,13 +14,15 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
   const [parentId, setParentId] = useState();
   useEffect(() => {
     if (selectedMenu) {
-      let {title, key} = selectedMenu;
+      let {title, key, parentId, parentName} = selectedMenu;
+      setParentId(parentId);
       menuForm.setFieldsValue({
         key,
         title,
+        parentId: parentName
       });
     }
-  }, [menuForm, selectedMenu]);
+  }, [menuForm, selectedMenu, setParentId]);
 
   const {isLoading, mutate} = useMutation({
     mutationFn: sendRequest,
@@ -105,8 +107,8 @@ const CUMenu = ({onBack, clientId, selectedMenu}) => {
     <>
       <Form form={menuForm} onFinish={onSubmit} className="sh-menu-item">
         <div className="sh-countainer">
-          {ITEMS.map((item) => (
-            <RenderElement searchForm={menuForm} {...item} />
+          {ITEMS.map((item, index) => (
+            <RenderElement key={'input_' + index} searchForm={menuForm} {...item} />
           ))}
         </div>
         <div className="sh-button">

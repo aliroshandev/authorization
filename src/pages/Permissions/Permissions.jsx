@@ -69,7 +69,6 @@ const Permissions = () => {
     },
     {
       title: "عملیات",
-      dataIndex: "parentId",
       render: (text, value) => (
         <>
           <Popconfirm

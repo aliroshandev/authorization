@@ -187,6 +187,7 @@ const RenderElement = ({
               filterOption={(inputValue, option) =>
                 option.children.includes(inputValue)
               }
+              allowClear={true}
               placeholder={placeholder}
               style={{ width: "100%" }}
               value={selectedAutocomplete.children}

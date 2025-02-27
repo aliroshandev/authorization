@@ -19,12 +19,20 @@ const CUPermission = ({onBack, selectedPermission, refetch}) => {
 
   useEffect(() => {
     if (selectedPermission) {
+      const {
+        title,
+        key,
+        url,
+        httpRequestMethod,
+      } = selectedPermission;
       menuForm.setFieldsValue({
-        title: selectedPermission?.title,
-        key: selectedPermission?.key,
+        title,
+        key,
+        url,
+        httpRequestMethod,
       });
     }
-  }, [selectedPermission]);
+  }, [menuForm, selectedPermission]);
 
   const ITEMS = [
     {
