@@ -44,9 +44,9 @@ const ResourcePermissions = () => {
     });
 
     const {
-        data: accessRole,
-        // status: accessRolesStatus,
-        // refetch: accessRolesRefetch,
+        data: resourcePermissions,
+        // status: resourcePermissionssStatus,
+        // refetch: resourcePermissionssRefetch,
     } = useQuery(`/resource-permission/find-by-menu-id/${selectedMenuId}`, getApi, {
         enabled: !!selectedMenuId,
     });
@@ -57,41 +57,47 @@ const ResourcePermissions = () => {
         // refetch: permissionsRefetch,
     } = useQuery("/permissions?pageSize=100&currentPage=1", getApi);
 
+    async function fillPermissionsToAllData(objectModal) {
+        setAllValues(p => {
+            Object.assign(p, objectModal);
+            return p;
+        });
+    }
+
     useEffect(() => {
-        if (accessRole?.data && resources?.data && permissions?.data) {
-            accessRole?.data?.map((resource) => {
-                const currentPermissions = [];
+        if (resourcePermissions?.data && resources?.data && permissions?.data) {
+            resourcePermissions.data.map((resource) => {
+                const currentPermissions = resource.permissionDtoList.map((dtoItem) => dtoItem?.id) ?? [];
 
-                resource.permissionDtoList.map((dtoItem) => {
-                    currentPermissions.push(dtoItem.id);
-                });
-
-                permissions?.data?.rows?.map((permission) => {
-                    const resourceTypePermission = resource.permissionDtoList;
-                    let selectedPermission = resourceTypePermission?.find(
+                permissions.data.rows?.map((permission) => {
+                    const resourcePermissionDTO = resource.permissionDtoList;
+                    let selectedPermission = resourcePermissionDTO?.find(
                         (rtp) => rtp.title === permission.title
                     );
 
-                    accessRole.data.find((accessRoleItem) => {
+                    resourcePermissions.data.find((resourcePermissionsItem) => {
                         if (selectedPermission?.resourcePermissionId)
-                            accessRoleItem.permissionDtoList.map((item) => {
+                            resourcePermissionsItem.permissionDtoList.map((item) => {
                                 if (selectedPermission.id === item?.id) {
                                     let temp = {...allValues};
                                     temp[resource.resourceId] = {
-                                        resourcePermissionUuidList: [...currentPermissions],
+                                        permissions: [...currentPermissions],
                                     };
-                                    setAllValues((p) => {
-                                        return {...p, ...temp};
-                                    });
+
+                                    fillPermissionsToAllData(temp)
+                                        .then()
+                                        .catch((e) => {})
+                                    // wholeDataSelected[resource.resourceId] = {
+                                    //     permissions: currentPermissions ?? [],
+                                    // };
                                 }
                             });
                     });
                 });
             });
-
-            // setCurrentAccess(accessRole?.data);
+            // setCurrentAccess(resourcePermissions?.data);
         }
-    }, [allValues, accessRole, resources, permissions]);
+    }, [allValues, resourcePermissions?.data, resources?.data, permissions?.data, setAllValues]);
 
     function togglePermission(permissionId, objectData) {
         if (
@@ -131,7 +137,7 @@ const ResourcePermissions = () => {
         }
         mutate({
             method: "POST",
-            endpoint: `api/resource-permission/save-all?menuId=${selectedMenuId}`,
+            endpoint: `resource-permission/save-all?menuId=${selectedMenuId}`,
             data,
         }, {
             onSuccess: (res) => {
@@ -313,9 +319,9 @@ const ResourcePermissions = () => {
                                                             // checked={allValues[
                                                             //   resource?.id
                                                             // ]?.permissions?.find(
-                                                            //   (accessRoleItem) => {
+                                                            //   (resourcePermissionsItem) => {
                                                             //     debugger;
-                                                            //     if (permission?.id === accessRoleItem)
+                                                            //     if (permission?.id === resourcePermissionsItem)
                                                             //       return true;
                                                             //   }
                                                             // )}
