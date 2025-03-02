@@ -58,13 +58,13 @@ const RightMenu: React.FC<Props> = ({isRightMenuCollapsed}) => {
           icon: <TiLightbulb/>,
           onClick: () => navigate("/access"),
         },
-        {
-          label: "نمایش دسترسی ها",
-          link: "show-access",
-          key: "show-access",
-          icon: <TiLightbulb/>,
-          onClick: () => navigate("/show-access"),
-        },
+        // {
+        //   label: "نمایش دسترسی ها",
+        //   link: "show-access",
+        //   key: "show-access",
+        //   icon: <TiLightbulb/>,
+        //   onClick: () => navigate("/show-access"),
+        // },
         {
           label: "مدیریت نقش ها",
           link: "roles-management",

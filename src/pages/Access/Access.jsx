@@ -23,10 +23,17 @@ const Access = () => {
   const tableHeader = useRef();
 
   const {
+    data: accessList,
+    status: accessStatus,
+    refetch: accessRefetch,
+  } = useQuery("/access/access-user-login", getApi);
+
+  const {
     data: clients,
     status: clientsStatus,
     refetch: clientsRefetch,
   } = useQuery("/clients", getApi);
+  console.log(accessList);
 
   const {
     data: menus,
@@ -89,20 +96,17 @@ const Access = () => {
             (rtp) => rtp.title === permission.title
           );
 
-          accessRole.data.find((accessRoleItem) => {
+          accessRole?.data?.find((accessRoleItem) => {
             if (selectedPermission?.resourcePermissionId)
               if (
                 selectedPermission.resourcePermissionId ===
                 accessRoleItem.resourcePermissionId
               ) {
                 let temp = {...allValues};
-                temp[resource.id] = {
+                temp[resource.resourceId] = {
                   resourcePermissions: [...currentPermissions],
                 };
-                setAllValues((p) => {
-                  Object.assign(p, temp);
-                  return p;
-                });
+                setAllValues(temp);
                 // isChecked = true;
               }
           });
@@ -135,6 +139,7 @@ const Access = () => {
       };
     }
     if (objectData.resourcePermissions.includes(id)) {
+      console.log('removed old: ', id);
       return {
         resourcePermissions:
           objectData.resourcePermissions.filter(
@@ -142,12 +147,27 @@ const Access = () => {
           ),
       };
     }
+    console.log('add new: ', id);
     return {
       resourcePermissions: [
         ...objectData.resourcePermissions,
         id,
       ],
     };
+  }
+
+  function resetHandler() {
+    setAllValues({});
+    setShowAccessTable(false);
+    if (
+      !!selectedClientId &&
+      !!selectedMenuId &&
+      !!selectedRoleId
+    ) {
+      resourcesRefetch();
+      permissionsRefetch();
+      accessRoleRefetch();
+    }
   }
 
   async function handleSave() {
@@ -255,7 +275,6 @@ const Access = () => {
             )}
           </div>
         </Col>
-
         <Col md={8}>
           <div className="client-section">
             <h3>نقش:</h3>
@@ -304,7 +323,7 @@ const Access = () => {
           </Button>
           <Button
             type="danger"
-            onClick={() => setShowAccessTable(false)}
+            onClick={() => resetHandler()}
             disabled={!showAccessTable}
           >
             انتخاب مجدد
@@ -330,42 +349,46 @@ const Access = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {resources?.data?.map((resource) => {
+                {resources?.data?.map((resource, resourceIndex) => {
                   return (
-                    <tr key={resource.id}>
+                    <tr key={`resource_${resourceIndex}_${resource.resourceId}`}>
                       <td className="bold-text">{resource.resourceName}</td>
                       {permissions?.data?.rows?.map((permission) => {
                         const resourcePermissions =
                           resource.permissionDtoList;
-                        let selectedPermission = resourcePermissions?.find(
-                          (rtp) => rtp.title === permission.title
+                        let validPermission = resourcePermissions?.find(
+                          (rtp) => rtp.id === permission.id
                         );
 
-                        if (selectedPermission) {
+                        if (validPermission) {
                           return (
-                            <td key={permission.permissionTitle}>
+                            <td key={`resource_${resourceIndex}_${permission.id}`}>
                               <input
                                 type="checkbox"
-                                checked={allValues?.null?.resourcePermissions?.find(
+                                key={'resource_' + resource.resourceId + '_permission_' + permission.id}
+                                checked={allValues?.[resource.resourceId]?.resourcePermissions?.find(
                                   (accessRoleItem) => {
                                     if (
-                                      selectedPermission?.resourcePermissionId
-                                    )
-                                      if (
-                                        selectedPermission.resourcePermissionId ===
+                                      validPermission?.resourcePermissionId
+                                    ) {
+                                      return (
+                                        validPermission.resourcePermissionId ===
                                         accessRoleItem
-                                      ) {
-                                        return true;
-                                      }
+                                      )
+                                    }
                                   }
                                 )}
-                                value={`${selectedPermission.resourcePermissionId}`}
+                                value={`${validPermission.resourcePermissionId}`}
                                 onChange={(e) => {
                                   let temp = {...allValues};
-                                  temp[resource.id] = togglePermission(
-                                    selectedPermission.resourcePermissionId,
-                                    temp[resource.id]
+                                  temp[resource.resourceId] = togglePermission(
+                                    validPermission.resourcePermissionId,
+                                    temp[resource.resourceId]
                                   );
+                                  console.log({
+                                    resource,
+                                    temp
+                                  })
                                   setAllValues((p) => {
                                     return {...p, ...temp};
                                   });
@@ -375,7 +398,7 @@ const Access = () => {
                           );
                         } else {
                           return (
-                            <td key={permission.permissionTitle}>---</td>
+                            <td key={`resource_${resourceIndex}_${permission.id}`}>---</td>
                           );
                         }
                       })}
